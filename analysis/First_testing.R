@@ -50,7 +50,7 @@ for(i in 1:nrow(metadata)) {
   }
 }
 
-indices <- which(types_mat[,"call"]==1 & metadata[,"rating"] >= 5)
+indices <- which((types_mat[,"call"]==1 | types_mat[,"song"]==1) & metadata[,"rating"] >= 3)
 
 
 
@@ -103,9 +103,8 @@ length(levels(labels))
 # hist(table(labels), max(table(labels)))
 
 
-architecture <- create_architecture(conv(4,5), maxPool(2), conv(8,3), maxPool(2), conv(16,3), maxPool(4), linear(100), linear(100),
-                                    default_activation = "selu", default_normalization = T, default_dropout = 0.3)
-architecture <- create_architecture(conv(),maxPool(20),linear(10))
+architecture <- create_architecture(conv(64,7,2,c(3,2)), maxPool(2), conv(128,3,2,1), conv(256,3,2,1), conv(128,1), conv(256,3,2,1), conv(512,3,2,1), conv(256,1), avgPool(c(2,13)), linear(256), 
+                                    default_activation = "relu", default_normalization = T, default_dropout = 0.3)
 print(architecture, c(1,128,801), 182)
 
 cnn.fit <- cnn(X=spectra,
@@ -113,13 +112,51 @@ cnn.fit <- cnn(X=spectra,
                architecture = architecture,
                loss = "softmax",
                validation = 0.1,
-               burnin = 100,
-               epochs = 1,
-               device = "cpu")
+               burnin = Inf,
+               epochs = 300,
+               early_stopping = 30,
+               lr_scheduler = config_lr_scheduler("reduce_on_plateau"),
+               device = "cuda")
 
-
-# cnn(X=array(runif(24*24*100), dim = c(100,1,24,24)),
-#     Y=factor(sample(c("a","b","c"), 100, replace=T), levels = c("a","b","c","d")),
+# cnn.fit <- cnn(X=array(runif(24*24*100), dim = c(100,1,24,24)),
+#     Y=factor(sample(c("a","b","d","e"), 100, replace=T), levels = c("a","b","c","d","e")),
 #     architecture = create_architecture(conv(),linear()),
-#     loss = "softmax", epochs = 3, validation=0.1, device="cuda")
+#     loss = "softmax", epochs = 3, validation=0.1, device="cpu")
+
+#saveRDS(cnn.fit, file = "analysis/results/CNN1.rds")
+#cnn.fit <- readRDS(file = "analysis/results/CNN1.rds")
+
+pred_classes <- predict(cnn.fit, newdata = cnn.fit$data$X[cnn.fit$data$validation,,,,drop=F], type = "class")
+pred_response <- predict(cnn.fit, newdata = cnn.fit$data$X[cnn.fit$data$validation,,,,drop=F], type = "response")
+true <- cnn.fit$data$Y[cnn.fit$data$validation]
+
+library(MLmetrics)
+
+
+Accuracy(pred_classes, true)
+
+library(pROC)
+
+tab <- table(cnn.fit$data$Y)
+
+color_palette <- colorRampPalette(c("white", "blue"))
+colors <- color_palette(max(tab))
+
+{
+  layout(matrix(1:2,nrow=1),widths=c(0.9,0.1))
+  par(mar=c(5.1,4.1,4.1,2.1))
+  add <- F
+  for(class in names(sort(tab, decreasing = F))) {
+    if(!any(true == class)) next
+    curve <- roc(as.numeric(true == class), pred_response[, class])
+    plot(curve, col=colors[tab[class]], add=add, main="ROC curves")
+    add <- T
+  }
+  
+  par(mar=c(5.1,0.5,4.1,0.5))
+  image(1, 1:max(tab), matrix(1:max(tab), nrow=1), col=colors, axes=F, xlab="", ylab="")
+  # Add axis on the right for the legend
+  axis(2, at=round(c(1, max(tab)/4, max(tab)/2, 3*max(tab)/4, max(tab))))
+  box()
+}
 
