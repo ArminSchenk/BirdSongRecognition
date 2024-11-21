@@ -1,0 +1,136 @@
+% make sure you have the VPN on, so that latex can load packages on the fly
+% upload the project folder to overleaf
+
+\documentclass{article}
+
+\usepackage[printonlyused]{acronym}
+
+% graphics package
+\usepackage{graphicx} 
+
+% enhanced citation package 
+\usepackage{natbib}
+\bibpunct{(}{)}{;}{a}{}{,}  % to adjust punctuation in references
+
+
+% adjust caption properties
+\usepackage[margin=10pt, font=small, labelfont=bf]{caption} 
+
+% hyperrefs on, with nicer colors
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage[]{hyperref}
+\definecolor{darkblue}{rgb}{0,0,.5}
+\hypersetup{colorlinks=true, breaklinks=true, linkcolor=darkblue, menucolor=darkblue, urlcolor=darkblue, citecolor=darkblue}
+
+% enhanced tables
+\usepackage{multicol}              
+\usepackage{multirow}
+\usepackage{booktabs}  
+
+
+\author{Armin Schenk}
+\title{Deep convolutional neural networks for predicting species distributions in ecology}
+
+\setcounter{secnumdepth}{0}
+\begin{document}
+\maketitle
+
+\begin{abstract} 
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+\section{Introduction}
+\acp{DNN} have achieved state-of-the-art performance in many domains (e.g. image recognition [Zitat], natural language processing [Zitat]), making them also appealing for many ecological applications such as \acp{SDM} [Zitat] and sound analysis [Zitat].
+
+Most of these networks are implemented in extensive \ac{DL} frameworks such as 'TensorFlow' [Zitat] and 'Torch' [Zitat], which offer immense flexibility necessary for building high-end networks such as large language models (e.g. GPT-3 [Zitat]). However, this level of flexibility is not needed for many standard applications and makes the frameworks very complex, which can discourage ecologists and other researchers without extensive programming and \ac{ML} expertise from using neural networks.
+
+Even the more user-friendly front-ends in R [Zitat], such as 'Keras' [Zitat] for 'TensorFlow' and 'Luz' [Zitat] for 'Torch', are challenging to use, especially compared to commonly used statistical and \ac{ML} methods such as mixed effect models or random forest. These models can usually be fitted/trained in a single line of code (e.g. with the R packages 'lme4' for mixed effect models [Zitat] and 'ranger' for random forest [Zitat]), which makes them much more accessible to researchers.
+
+The 'cito' R package was developed to address this problem. In its initial release (\cite{amesoderCitoPackageTraining2024}) it was demonstrated how \acp{FCNN} can be build and trained in a single line of code using 'cito'. Additionally, 'cito' implements many important functionalities absent in similar R packages ('brulee' [Zitat], 'h2o' [Zitat], 'neuralnet' [Zitat] and 'nnet' [Zitat]) such as GPU support, bootstrapping and various \acp{xAI} metrics.
+
+However, by design \acp{FCNN} are limited to scalar input data, which makes them unusable for certain applications such as image classification. For these tasks a neural network architecture that allows tensors as input data is necessary.
+As a solution, 'cito' has been extended to include two new architectures: \acp{CNN} and \acp{MMN}, which combine the \ac{FCNN} and \ac{CNN} architectures to allow the processing of multiple types of data in the same network (e.g. remote sensing images and environmental variables).
+
+Here, I introduce these new features of 'cito' and demonstrate, using the example of bird song recognition, how they make a wider range of applications accessible to researchers with limited expertise in \ac{ML}.
+
+
+\section{'cito' package}
+\subsection{Current state of the package}
+The 'cito' R package aims at providing a user-friendly framework to specify, deploy and interpret \acp{DNN} with the goal of making this class of models more accessible to researchers \citep{amesoderCitoPackageTraining2024}. In addition to
+\subsection{Convolutional neural networks}
+\subsubsection{\textit{create{\_}architecture()}}
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[]
+	\begin{tabular}{llll}
+		\hline
+		Layer                                & Arguments     & Explanation                                                                                                                       & Default   \\ \hline
+		\multirow{5}{*}{\textbf{linear()}}   & n\_neurons    & Number of neurons in this layer                                                                                                   & 10        \\
+		& bias          & Add bias to neurons                                                                                                               & TRUE      \\
+		& activation    & Activation function applied after this layer                                                                                      & 'selu'    \\
+		& normalization & Add batch normalization after this layer                                                                                          & FALSE     \\
+		& dropout       & Dropout probability of neurons in this layer                                                                                      & 0         \\ \hline
+		\multirow{9}{*}{\textbf{conv()}}     & n\_kernels    & Number of kernels in this layer                                                                                                   & 10        \\
+		& kernel\_size  & Size of kernels in this layer                                                                                                     & 3         \\
+		& stride        & Stride of kernels in this layer                                                                                                   & 1         \\
+		& padding       & Zero-padding applied to the input of this layer                                                                                   & 0         \\
+		& dilation      & Dilation of kernels in this layer                                                                                                 & 1         \\
+		& bias          & Add bias to kernels                                                                                                               & TRUE      \\
+		& activation    & Activation function applied after this layer                                                                                      & 'selu'    \\
+		& normalization & Add batch normalization after this layer                                                                                          & FALSE     \\
+		& dropout       & Dropout probability of output channels from this layer                                                                            & 0         \\ \hline
+		\multirow{3}{*}{\textbf{avgPool()}}  & kernel\_size  & Size of average-pooling window                                                                                                    & 2         \\
+		& stride        & Stride of average-pooling window                                                                                                  & 2         \\
+		& padding       & Zero-padding applied to the input of this layer                                                                                   & 0         \\ \hline
+		\multirow{4}{*}{\textbf{maxPool()}}  & kernel\_size  & Size of maximum-pooling window                                                                                                    & 2         \\
+		& stride        & Stride of maximum-pooling window                                                                                                  & 2         \\
+		& padding       & Zero-padding applied to the input of this layer                                                                                   & 0         \\
+		& dilation      & Dilation of maximum-pooling window                                                                                                & 1         \\ \hline
+		\multirow{3}{*}{\textbf{transfer()}} & name          & Name of the pretrained model                                                                                                      & 'alexnet' \\
+		& pretrained    & Use weights pretrained on ImageNet dataset                                                                                        & TRUE      \\
+		& freeze        & \begin{tabular}[c]{@{}l@{}}Only adjust the weights of the linear layers\\  at the end of the network during training\end{tabular} & TRUE      \\ \hline
+	\end{tabular}
+	\caption{}
+\end{table}
+\subsubsection{\textit{cnn()}}
+\subsection{Multi-modal neural networks}
+\subsubsection{\textit{mmn()}}
+
+\section{Case study}
+\subsection{Data}
+\subsection{Architecture}
+\subsection{Training and Testing}
+
+
+\section{Discussion}
+\section{Code and data availability}
+\section{Abbreviations}
+\begin{acronym}
+	
+	\acro{DNN}[DNN]{deep neural network}
+	\acro{FCNN}[FCNN]{fully-connected neural network}
+	\acro{CNN}[CNN]{convolutional neural network}
+	\acro{MMN}[MMN]{multi-modal neural network}
+	\acro{SDM}[SDM]{species distribution model}
+	\acro{DL}[DL]{deep learning}
+	\acro{ML}[ML]{machine learning}
+	\acro{xAI}[xAI]{explainable AI}
+	
+\end{acronym}
+\section{Declaration of independence}
+Ich habe die Arbeit selbstständig verfasst, keine anderen als die angegebenen Quellen und Hilfsmittel benutzt und bisher keiner anderen Prüfungsbehörde vorgelegt. Außerdem bestätige ich hiermit, dass die vorgelegten Druckexemplare und die vorgelegte elektronische Version der Arbeit identisch sind, dass ich über wissenschaftlich korrektes Arbeiten und Zitieren aufgeklärt wurde und dass ich von den in §26 Abs. 5 vorgesehenen Rechtsfolgen Kenntnis habe.
+
+
+% this is the style file. If you need to change something, google if the file you need is already there. If not (very uncommon) google makebst.
+\bibliographystyle{chicago} 
+
+% this is the bibtex libary file.
+\bibliography{../literature/literature}
+
+% Note: all files can be anywhere, just give the full path.
+
+
+\end{document}

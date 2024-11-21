@@ -4,3 +4,11 @@
 .Ruserdata
 
 data/
+paper/thesis.aux
+paper/thesis.bbl
+paper/thesis.blg
+paper/thesis.log
+paper/thesis.out
+paper/thesis.pdf
+paper/thesis.synctex.gz
+paper/thesis.toc
