@@ -15,6 +15,8 @@
 
 % adjust caption properties
 \usepackage[margin=10pt, font=small, labelfont=bf]{caption} 
+\captionsetup{justification=raggedright, singlelinecheck=false}
+
 
 % hyperrefs on, with nicer colors
 \usepackage{color}
@@ -26,11 +28,28 @@
 % enhanced tables
 \usepackage{multicol}              
 \usepackage{multirow}
-\usepackage{booktabs}  
+\usepackage{booktabs} 
+
+% For displaying code
+\usepackage{listings}
+
+% Define custom settings for R code
+%\lstset{
+	%language=R,
+	%basicstyle=\ttfamily\footnotesize,
+	%showstringspaces=false,
+	%breaklines=true,
+	%frame=single,
+	%numbers=left,
+	%numberstyle=\tiny\color{gray},
+	%captionpos=b
+%}
+
+\usepackage{float}
 
 
 \author{Armin Schenk}
-\title{Deep convolutional neural networks for predicting species distributions in ecology}
+\title{Extending the 'cito' package: deep convolutional neural networks in ecology}
 
 \setcounter{secnumdepth}{0}
 \begin{document}
@@ -47,7 +66,7 @@
 
 Most of these networks are implemented in extensive \ac{DL} frameworks such as 'TensorFlow' [Zitat] and 'Torch' [Zitat], which offer immense flexibility necessary for building high-end networks such as large language models (e.g. GPT-3 [Zitat]). However, this level of flexibility is not needed for many standard applications and makes the frameworks very complex, which can discourage ecologists and other researchers without extensive programming and \ac{ML} expertise from using neural networks.
 
-Even the more user-friendly front-ends in R [Zitat], such as 'Keras' [Zitat] for 'TensorFlow' and 'Luz' [Zitat] for 'Torch', are challenging to use, especially compared to commonly used statistical and \ac{ML} methods such as mixed effect models or random forest. These models can usually be fitted/trained in a single line of code (e.g. with the R packages 'lme4' for mixed effect models [Zitat] and 'ranger' for random forest [Zitat]), which makes them much more accessible to researchers.
+ 
 
 The 'cito' R package was developed to address this problem. In its initial release (\cite{amesoderCitoPackageTraining2024}) it was demonstrated how \acp{FCNN} can be build and trained in a single line of code using 'cito'. Additionally, 'cito' implements many important functionalities absent in similar R packages ('brulee' [Zitat], 'h2o' [Zitat], 'neuralnet' [Zitat] and 'nnet' [Zitat]) such as GPU support, bootstrapping and various \acp{xAI} metrics.
 
@@ -61,13 +80,14 @@ Here, I introduce these new features of 'cito' and demonstrate, using the exampl
 \subsection{Current state of the package}
 The 'cito' R package aims at providing a user-friendly framework to specify, deploy and interpret \acp{DNN} with the goal of making this class of models more accessible to researchers \citep{amesoderCitoPackageTraining2024}. In addition to
 \subsection{Convolutional neural networks}
-\subsubsection{\textit{create{\_}architecture()}}
-% Please add the following required packages to your document preamble:
-% \usepackage{multirow}
-\begin{table}[]
-	\begin{tabular}{llll}
+
+\begin{table}[t]
+	\centering
+	\renewcommand{\arraystretch}{1.3}
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{|llll|}
 		\hline
-		Layer                                & Arguments     & Explanation                                                                                                                       & Default   \\ \hline
+		\textbf{Layer}                                & \textbf{Arguments}     & \textbf{Explanation}                                                                                                                       & \textbf{Default}   \\ \hline
 		\multirow{5}{*}{\textbf{linear()}}   & n\_neurons    & Number of neurons in this layer                                                                                                   & 10        \\
 		& bias          & Add bias to neurons                                                                                                               & TRUE      \\
 		& activation    & Activation function applied after this layer                                                                                      & 'selu'    \\
@@ -89,15 +109,78 @@ The 'cito' R package aims at providing a user-friendly framework to specify, dep
 		& stride        & Stride of maximum-pooling window                                                                                                  & 2         \\
 		& padding       & Zero-padding applied to the input of this layer                                                                                   & 0         \\
 		& dilation      & Dilation of maximum-pooling window                                                                                                & 1         \\ \hline
-		\multirow{3}{*}{\textbf{transfer()}} & name          & Name of the pretrained model                                                                                                      & 'alexnet' \\
+		\multirow{4}{*}{\textbf{transfer()}} & name          & Name of the pretrained model                                                                                                      & 'alexnet' \\
 		& pretrained    & Use weights pretrained on ImageNet dataset                                                                                        & TRUE      \\
-		& freeze        & \begin{tabular}[c]{@{}l@{}}Only adjust the weights of the linear layers\\  at the end of the network during training\end{tabular} & TRUE      \\ \hline
+		& freeze        & \begin{tabular}[c]{@{}l@{}}Only adjust the weights of the linear layers at the end\\ of the network during training\end{tabular} & TRUE      \\ \hline
+	\end{tabular}
+	}
+	\caption{}
+\end{table}
+\begin{table}[]
+	\begin{tabular}{|lll|}
+		\hline
+		Argument           & Explanation & Default \\
+		\hline
+		X                  &             &         \\
+		Y                  &             &         \\
+		architecture       &             &         \\
+		loss               &             &         \\
+		optimizer          &             &         \\
+		lr                 &             &         \\
+		alpha              &             &         \\
+		lambda             &             &         \\
+		validation         &             &         \\
+		batchsize          &             &         \\
+		burnin             &             &         \\
+		shuffle            &             &         \\
+		epochs             &             &         \\
+		early\_stopping    &             &         \\
+		lr\_scheduler      &             &         \\
+		custom\_parameters &             &         \\
+		device             &             &         \\
+		plot               &             &         \\
+		verbose            &             &         \\
+		\hline
 	\end{tabular}
 	\caption{}
 \end{table}
-\subsubsection{\textit{cnn()}}
+The most important step to build a \ac{CNN} is to specify the wanted architecture. Due to the complexity of \acp{CNN} specifying the networks architecture can't be done by simply providing three vectors as it is done for \acp{FCNN} with the $dnn()$ function. Instead I provide a function $create\_architecture()$ that creates a $citoarchitecture$ object which contains all the information about the network architecture the $cnn()$ function needs.
+\begin{figure}[H]
+	\centering
+	\newsavebox{\lstbox} % Create a savebox to store the listing
+	\begin{lrbox}{\lstbox}
+		\begin{lstlisting}
+create_architecture <- function(...,
+  default_n_neurons = 10,
+  default_n_kernels = 10,
+  default_kernel_size = list(conv = 3, maxPool = 2, avgPool = 2),
+  default_stride = list(conv = 1, maxPool = NULL, avgPool = NULL),
+  default_padding = list(conv = 0, maxPool = 0, avgPool = 0),
+  default_dilation = list(conv = 1, maxPool = 1),
+  default_bias = list(conv = TRUE, linear = TRUE),
+  default_activation = list(conv = "selu", linear = "selu"),
+  default_normalization = list(conv = FALSE, linear = FALSE),
+  default_dropout = list(conv = 0.0, linear = 0.0))
+		\end{lstlisting}
+	\end{lrbox}
+	\resizebox{\textwidth}{!}{\usebox{\lstbox}}
+\end{figure}
 \subsection{Multi-modal neural networks}
-\subsubsection{\textit{mmn()}}
+
+\subsection{Package validation}
+In this chapter I discuss the validation of the functionality of this package and how I made sure that the new architectures worked as intended. For that purpose, I implemented unit tests using the R package 'testthat' [Zitat].
+
+The first tests check whether the architectures work for all possible combinations of input data, loss functions and training device. To do this, I generate randomly uniformly distributed input data to simulate the three cases of 1D (e.g. spectrograms), 2D (e.g. images) or 3D (e.g. time series of satellite images) convolutions. I then generate one or more appropriate output data for each loss function. For example, the output for a binomial loss can be provided in form of a factor or a matrix filled with either boolean values or ones and zeros. Afterwards, I train one (or more, if the loss function allows for different structures of output data) CNNs on each available device (CPU, GPU) for each combination of input data and loss function. The CNN architecture used for this is rather simple to reduce computational cost, but includes all of the available layer types presented above (except the transfer layer, which is tested separately and will be further discussed below). For each trained CNN, it is also tested whether the implemented support functions such as the $print()$, $plot()$ and $predict()$ run without errors.
+
+Unlike the first tests, which used only randomly generated data to prove that the code was working correctly, the next test uses non-random data to ensure that the networks are able to learn and predict properly. To do this, I generated gray-scale images of either rectangles or ellipsoids. 90\% of the generated images were used to train a CNN, which was then used to predict the class labels of the remaining 10\%. The test is considered successful if the achieved accuracy is above 95\%. To train the CNN in this test, I also used some of the supported training techniques, such as elastic net regularization and early stopping.
+
+The final tests ensure that transfer learning works properly. First, it is tested whether all the supported architectures of the 'torchvision' package can be loaded and a CNN can be built and trained error-free, with or without linear layers provided after the transfer layer. This is followed by an accuracy test similar to the one described above.
+
+The tests for the MMN architecture are mostly the same, with the main difference being that instead of a CNN, a MMN consisting of a CNN and a DNN is trained.
+
+
+
+
 
 \section{Case study}
 \subsection{Data}
@@ -109,7 +192,6 @@ The 'cito' R package aims at providing a user-friendly framework to specify, dep
 \section{Code and data availability}
 \section{Abbreviations}
 \begin{acronym}
-	
 	\acro{DNN}[DNN]{deep neural network}
 	\acro{FCNN}[FCNN]{fully-connected neural network}
 	\acro{CNN}[CNN]{convolutional neural network}
@@ -118,7 +200,6 @@ The 'cito' R package aims at providing a user-friendly framework to specify, dep
 	\acro{DL}[DL]{deep learning}
 	\acro{ML}[ML]{machine learning}
 	\acro{xAI}[xAI]{explainable AI}
-	
 \end{acronym}
 \section{Declaration of independence}
 Ich habe die Arbeit selbstständig verfasst, keine anderen als die angegebenen Quellen und Hilfsmittel benutzt und bisher keiner anderen Prüfungsbehörde vorgelegt. Außerdem bestätige ich hiermit, dass die vorgelegten Druckexemplare und die vorgelegte elektronische Version der Arbeit identisch sind, dass ich über wissenschaftlich korrektes Arbeiten und Zitieren aufgeklärt wurde und dass ich von den in §26 Abs. 5 vorgesehenen Rechtsfolgen Kenntnis habe.
