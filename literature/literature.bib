@@ -1,0 +1,435 @@
+@article{amesoderCitoPackageTraining2024,
+  title = {`cito': An {{R}} Package for Training Neural Networks Using `torch'},
+  shorttitle = {`cito'},
+  author = {Ames{\"o}der, Christian and Hartig, Florian and Pichler, Maximilian},
+  year = {2024},
+  month = jun,
+  journal = {Ecography},
+  volume = {2024},
+  number = {6},
+  pages = {e07143},
+  issn = {0906-7590, 1600-0587},
+  doi = {10.1111/ecog.07143},
+  urldate = {2024-11-19},
+  abstract = {Deep neural networks (DNN) have become a central method in ecology. To build and train DNNs in deep learning (DL) applications, most users rely on one of the major deep learning frameworks, in particular PyTorch or TensorFlow. Using these frameworks, however, requires substantial experience and time. Here, we present `cito', a user-friendly R package for DL that allows specifying DNNs in the familiar formula syntax used by many R packages. To fit the models, `cito' takes advantage of the numerically optimized `torch' library, including the ability to switch between training models on the CPU or the graphics processing unit (GPU) which allows the efficient training of large DNNs. Moreover, `cito' includes many user-friendly functions for model plotting and analysis, including explainable AI (xAI) metrics for effect sizes and variable importance. All xAI metrics as well as predictions can optionally be bootstrapped to generate confidence intervals, including p-values. To showcase a typical analysis pipeline using `cito', with its built-in xAI features, we built a species distribution model of the African elephant. We hope that by providing a user-friendly R framework to specify, deploy and interpret DNNs, `cito' will make this interesting class of models more accessible to ecological data analysis. A stable version of `cito' can be installed from the comprehensive R archive network (CRAN).},
+  langid = {english},
+  file = {C:\Users\armin\Zotero\storage\B9Q2H7E4\Amesöder et al. - 2024 - ‘cito' an R package for training neural networks .pdf}
+}
+
+@misc{amesoederCitoPackageTraining2023,
+  title = {Cito: {{An R}} Package for Training Neural Networks Using Torch},
+  shorttitle = {Cito},
+  author = {Amesoeder, Christian and Hartig, Florian and Pichler, Maximilian},
+  year = {2023},
+  month = mar,
+  number = {arXiv:2303.09599},
+  eprint = {2303.09599},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2303.09599},
+  urldate = {2023-04-20},
+  abstract = {1. Deep neural networks (DNN) have become a central class of algorithms for regression and classification tasks. Although some packages exist that allow users to specify DNN in R, those are rather limited in their functionality. Most current deep learning applications therefore rely on one of the major deep learning frameworks, PyTorch or TensorFlow, to build and train DNN. However, using these frameworks requires substantially more training and time than comparable regression or machine learning packages in the R environment. 2. Here, we present cito, an user-friendly R package for deep learning. cito allows R users to specify deep neural networks in the familiar formula syntax used by most modeling functions in R. In the background, cito uses torch to fit the models, taking advantage of all the numerical optimizations of the torch library, including the ability to switch between training models on CPUs or GPUs. Moreover, cito includes many user-friendly functions for predictions and an explainable Artificial Intelligence (xAI) pipeline for the fitted models. 3. We showcase a typical analysis pipeline using cito, including its built-in xAI features to explore the trained DNN, by building a species distribution model of the African elephant. 4. In conclusion, cito provides a user-friendly R framework to specify, deploy and interpret deep neural networks based on torch. The current stable CRAN version mainly supports fully connected DNNs, but it is planned that future versions will also include CNNs and RNNs.},
+  archiveprefix = {arXiv},
+  keywords = {Computer Science - Machine Learning,I.5.4},
+  file = {C\:\\Users\\armin\\Zotero\\storage\\IGIATVHA\\Amesoeder et al. - 2023 - cito An R package for training neural networks us.pdf;C\:\\Users\\armin\\Zotero\\storage\\3VYY5LSX\\2303.html}
+}
+
+@article{anandIntegratingMultiSensorsData2021,
+  title = {Integrating {{Multi-Sensors Data}} for {{Species Distribution Mapping Using Deep Learning}} and {{Envelope Models}}},
+  author = {Anand, Akash and Pandey, Manish K. and Srivastava, Prashant K. and Gupta, Ayushi and Khan, Mohammed Latif},
+  year = {2021},
+  month = jan,
+  journal = {Remote Sensing},
+  volume = {13},
+  number = {16},
+  pages = {3284},
+  publisher = {Multidisciplinary Digital Publishing Institute},
+  issn = {2072-4292},
+  doi = {10.3390/rs13163284},
+  urldate = {2023-04-26},
+  abstract = {The integration of ecological and atmospheric characteristics for biodiversity management is fundamental for long-term ecosystem conservation and drafting forest management strategies, especially in the current era of climate change. The explicit modelling of regional ecological responses and their impact on individual species is a significant prerequisite for any adaptation strategy. The present study focuses on predicting the regional distribution of Rhododendron arboreum, a medicinal plant species found in the Himalayan region. Advanced Species Distribution Models (SDM) based on the principle of predefined hypothesis, namely BIOCLIM, was used to model the potential distribution of Rhododendron arboreum. This hypothesis tends to vary with the change in locations, and thus, robust models are required to establish nonlinear complex relations between the input parameters. To address this nonlinear relation, a class of deep neural networks, Convolutional Neural Network (CNN) architecture is proposed, designed, and tested, which eventually gave much better accuracy than the BIOCLIM model. Both of the models were given 16 input parameters, including ecological and atmospheric variables, which were statistically resampled and were then utilized in establishing the linear and nonlinear relationship to better fit the occurrence scenarios of the species. The input parameters were mostly acquired from the recent satellite missions, including MODIS, Sentinel-2, Sentinel-5p, the Shuttle Radar Topography Mission (SRTM), and ECOSTRESS. The performance across all the thresholds was evaluated using the value of the Area Under Curve (AUC) evaluation metrics. The AUC value was found to be 0.917 with CNN, whereas it was 0.68 with BIOCLIM, respectively. The performance evaluation metrics indicate the superiority of CNN for species distribution over BIOCLIM.},
+  copyright = {http://creativecommons.org/licenses/by/3.0/},
+  langid = {english},
+  keywords = {<i>Rhododendron arboreum</i>,biodiversity management,convolutional neural network,ecological responses,spatial distribution modelling},
+  file = {C:\Users\armin\Zotero\storage\6JCMISVV\Anand et al. - 2021 - Integrating Multi-Sensors Data for Species Distrib.pdf}
+}
+
+@article{bachPixelWiseExplanationsNonLinear2015,
+  title = {On {{Pixel-Wise Explanations}} for {{Non-Linear Classifier Decisions}} by {{Layer-Wise Relevance Propagation}}},
+  author = {Bach, Sebastian and Binder, Alexander and Montavon, Gr{\'e}goire and Klauschen, Frederick and M{\"u}ller, Klaus-Robert and Samek, Wojciech},
+  year = {2015},
+  month = jul,
+  journal = {PLOS ONE},
+  volume = {10},
+  number = {7},
+  pages = {e0130140},
+  publisher = {Public Library of Science},
+  issn = {1932-6203},
+  doi = {10.1371/journal.pone.0130140},
+  urldate = {2023-06-14},
+  abstract = {Understanding and interpreting classification decisions of automated image classification systems is of high value in many applications, as it allows to verify the reasoning of the system and provides additional information to the human expert. Although machine learning methods are solving very successfully a plethora of tasks, they have in most cases the disadvantage of acting as a black box, not providing any information about what made them arrive at a particular decision. This work proposes a general solution to the problem of understanding classification decisions by pixel-wise decomposition of nonlinear classifiers. We introduce a methodology that allows to visualize the contributions of single pixels to predictions for kernel-based classifiers over Bag of Words features and for multilayered neural networks. These pixel contributions can be visualized as heatmaps and are provided to a human expert who can intuitively not only verify the validity of the classification decision, but also focus further analysis on regions of potential interest. We evaluate our method for classifiers trained on PASCAL VOC 2009 images, synthetic image data containing geometric shapes, the MNIST handwritten digits data set and for the pre-trained ImageNet model available as part of the Caffe open source package.},
+  langid = {english},
+  keywords = {Algorithms,Coding mechanisms,Imaging techniques,Kernel functions,Neural networks,Neurons,Sensory perception,Vision},
+  file = {C:\Users\armin\Zotero\storage\TV9ZANLS\Bach et al. - 2015 - On Pixel-Wise Explanations for Non-Linear Classifi.pdf}
+}
+
+@misc{birdclef-2024,
+  title = {{{BirdCLEF}} 2024},
+  author = {Klinck, Holger and {Maggie} and Dane, Sohier and Kahl, Stefan and Denton, Tom and Ramesh, Vijay},
+  year = {2024}
+}
+
+@misc{BirdCLEF2024,
+  title = {{{BirdCLEF}} 2024},
+  urldate = {2024-12-10},
+  abstract = {Bird species identification from audio, focused on under-studied species in the Western Ghats, a major biodiversity hotspot in India.},
+  howpublished = {https://kaggle.com/birdclef-2024},
+  langid = {english},
+  file = {C:\Users\armin\Zotero\storage\V7YJXQSQ\citation.html}
+}
+
+@article{deneuConvolutionalNeuralNetworks2021,
+  title = {Convolutional Neural Networks Improve Species Distribution Modelling by Capturing the Spatial Structure of the Environment},
+  author = {Deneu, Benjamin and Servajean, Maximilien and Bonnet, Pierre and Botella, Christophe and Munoz, Fran{\c c}ois and Joly, Alexis},
+  year = {2021},
+  month = apr,
+  journal = {PLOS Computational Biology},
+  volume = {17},
+  number = {4},
+  pages = {e1008856},
+  publisher = {Public Library of Science},
+  issn = {1553-7358},
+  doi = {10.1371/journal.pcbi.1008856},
+  urldate = {2023-04-21},
+  abstract = {Convolutional Neural Networks (CNNs) are statistical models suited for learning complex visual patterns. In the context of Species Distribution Models (SDM) and in line with predictions of landscape ecology and island biogeography, CNN could grasp how local landscape structure affects prediction of species occurrence in SDMs. The prediction can thus reflect the signatures of entangled ecological processes. Although previous machine-learning based SDMs can learn complex influences of environmental predictors, they cannot acknowledge the influence of environmental structure in local landscapes (hence denoted ``punctual models''). In this study, we applied CNNs to a large dataset of plant occurrences in France (GBIF), on a large taxonomical scale, to predict ranked relative probability of species (by joint learning) to any geographical position. We examined the way local environmental landscapes improve prediction by performing alternative CNN models deprived of information on landscape heterogeneity and structure (``ablation experiments''). We found that the landscape structure around location crucially contributed to improve predictive performance of CNN-SDMs. CNN models can classify the predicted distributions of many species, as other joint modelling approaches, but they further prove efficient in identifying the influence of local environmental landscapes. CNN can then represent signatures of spatially structured environmental drivers. The prediction gain is noticeable for rare species, which open promising perspectives for biodiversity monitoring and conservation strategies. Therefore, the approach is of both theoretical and practical interest. We discuss the way to test hypotheses on the patterns learnt by CNN, which should be essential for further interpretation of the ecological processes at play.},
+  langid = {english},
+  keywords = {Biogeography,Cartography,Decision trees,Ecological niches,Neural networks,Neurons,Statistical distributions,Theoretical ecology},
+  file = {C:\Users\armin\Zotero\storage\N8MFZTU3\Deneu et al. - 2021 - Convolutional neural networks improve species dist.pdf}
+}
+
+@inproceedings{deneuEvaluationDeepSpecies2019,
+  title = {Evaluation of {{Deep Species Distribution Models Using Environment}} and {{Co-occurrences}}},
+  booktitle = {Experimental {{IR Meets Multilinguality}}, {{Multimodality}}, and {{Interaction}}},
+  author = {Deneu, Benjamin and Servajean, Maximilien and Botella, Christophe and Joly, Alexis},
+  editor = {Crestani, Fabio and Braschler, Martin and Savoy, Jacques and Rauber, Andreas and M{\"u}ller, Henning and Losada, David E. and Heinatz B{\"u}rki, Gundula and Cappellato, Linda and Ferro, Nicola},
+  year = {2019},
+  series = {Lecture {{Notes}} in {{Computer Science}}},
+  pages = {213--225},
+  publisher = {Springer International Publishing},
+  address = {Cham},
+  doi = {10.1007/978-3-030-28577-7_18},
+  abstract = {This paper presents an evaluation of several approaches of plants species distribution modeling based on spatial, environmental and co-occurrences data using machine learning methods. In particular, we re-evaluate the environmental convolutional neural network model that obtained the best performance of the GeoLifeCLEF 2018 challenge but on a revised dataset that fixes some of the issues of the previous one. We also go deeper in the analysis of co-occurrences information by evaluating a new model that jointly takes environmental variables and co-occurrences as inputs of an end-to-end network. Results show that the environmental models are the best performing methods and that there is a significant amount of complementary information between co-occurrences and environment. Indeed, the model learned on both inputs allows a significant performance gain compared to the environmental model alone.},
+  isbn = {978-3-030-28577-7},
+  langid = {english},
+  file = {C:\Users\armin\Zotero\storage\ZFGV6TQT\Deneu et al. - 2019 - Evaluation of Deep Species Distribution Models Usi.pdf}
+}
+
+@article{deneuVeryHighResolution2022,
+  title = {Very {{High Resolution Species Distribution Modeling Based}} on {{Remote Sensing Imagery}}: {{How}} to {{Capture Fine-Grained}} and {{Large-Scale Vegetation Ecology With Convolutional Neural Networks}}?},
+  shorttitle = {Very {{High Resolution Species Distribution Modeling Based}} on {{Remote Sensing Imagery}}},
+  author = {Deneu, Benjamin and Joly, Alexis and Bonnet, Pierre and Servajean, Maximilien and Munoz, Fran{\c c}ois},
+  year = {2022},
+  month = may,
+  journal = {Frontiers in Plant Science},
+  volume = {13},
+  pages = {839279},
+  issn = {1664-462X},
+  doi = {10.3389/fpls.2022.839279},
+  urldate = {2023-04-21},
+  abstract = {Species Distribution Models (SDMs) are fundamental tools in ecology for predicting the geographic distribution of species based on environmental data. They are also very useful from an application point of view, whether for the implementation of conservation plans for threatened species or for monitoring invasive species. The generalizability and spatial accuracy of an SDM depend very strongly on the type of model used and the environmental data used as explanatory variables. In this article, we study a country-wide species distribution model based on very high resolution (VHR) (1 m) remote sensing images processed by a convolutional neural network. We demonstrate that this model can capture landscape and habitat information at very fine spatial scales while providing overall better predictive performance than conventional models. Moreover, to demonstrate the ecological significance of the model, we propose an original analysis based on the t-distributed Stochastic Neighbor Embedding (t-SNE) dimension reduction technique. It allows visualizing the relation between input data and species traits or environment learned by the model as well as conducting some statistical tests verifying them. We also analyze the spatial mapping of the t-SNE dimensions at both national and local levels, showing the model benefit of automatically learning environmental variation at multiple scales.},
+  pmcid = {PMC9122285},
+  pmid = {35599901},
+  file = {C:\Users\armin\Zotero\storage\X9Y9LPZY\Deneu et al. - 2022 - Very High Resolution Species Distribution Modeling.pdf}
+}
+
+@article{dormannCollinearityReviewMethods2013,
+  title = {Collinearity: A Review of Methods to Deal with It and a Simulation Study Evaluating Their Performance},
+  shorttitle = {Collinearity},
+  author = {Dormann, Carsten F. and Elith, Jane and Bacher, Sven and Buchmann, Carsten and Carl, Gudrun and Carr{\'e}, Gabriel and Marqu{\'e}z, Jaime R. Garc{\'i}a and Gruber, Bernd and Lafourcade, Bruno and Leit{\~a}o, Pedro J. and M{\"u}nkem{\"u}ller, Tamara and McClean, Colin and Osborne, Patrick E. and Reineking, Bj{\"o}rn and Schr{\"o}der, Boris and Skidmore, Andrew K. and Zurell, Damaris and Lautenbach, Sven},
+  year = {2013},
+  journal = {Ecography},
+  volume = {36},
+  number = {1},
+  pages = {27--46},
+  issn = {1600-0587},
+  doi = {10.1111/j.1600-0587.2012.07348.x},
+  urldate = {2023-04-20},
+  abstract = {Collinearity refers to the non independence of predictor variables, usually in a regression-type analysis. It is a common feature of any descriptive ecological data set and can be a problem for parameter estimation because it inflates the variance of regression parameters and hence potentially leads to the wrong identification of relevant predictors in a statistical model. Collinearity is a severe problem when a model is trained on data from one region or time, and predicted to another with a different or unknown structure of collinearity. To demonstrate the reach of the problem of collinearity in ecology, we show how relationships among predictors differ between biomes, change over spatial scales and through time. Across disciplines, different approaches to addressing collinearity problems have been developed, ranging from clustering of predictors, threshold-based pre-selection, through latent variable methods, to shrinkage and regularisation. Using simulated data with five predictor-response relationships of increasing complexity and eight levels of collinearity we compared ways to address collinearity with standard multiple regression and machine-learning approaches. We assessed the performance of each approach by testing its impact on prediction to new data. In the extreme, we tested whether the methods were able to identify the true underlying relationship in a training dataset with strong collinearity by evaluating its performance on a test dataset without any collinearity. We found that methods specifically designed for collinearity, such as latent variable methods and tree based models, did not outperform the traditional GLM and threshold-based pre-selection. Our results highlight the value of GLM in combination with penalised methods (particularly ridge) and threshold-based pre-selection when omitted variables are considered in the final interpretation. However, all approaches tested yielded degraded predictions under change in collinearity structure and the `folk lore'-thresholds of correlation coefficients between predictor variables of {\textbar}r{\textbar} {$>$}0.7 was an appropriate indicator for when collinearity begins to severely distort model estimation and subsequent prediction. The use of ecological understanding of the system in pre-analysis variable selection and the choice of the least sensitive statistical approaches reduce the problems of collinearity, but cannot ultimately solve them.},
+  langid = {english},
+  file = {C\:\\Users\\armin\\Zotero\\storage\\Z4JAETXI\\Dormann et al. - 2013 - Collinearity a review of methods to deal with it .pdf;C\:\\Users\\armin\\Zotero\\storage\\F8FDVY9A\\j.1600-0587.2012.07348.html}
+}
+
+@article{estopinanDeepSpeciesDistribution2022,
+  title = {Deep {{Species Distribution Modeling From Sentinel-2 Image Time-Series}}: {{A Global Scale Analysis}} on the {{Orchid Family}}},
+  shorttitle = {Deep {{Species Distribution Modeling From Sentinel-2 Image Time-Series}}},
+  author = {Estopinan, Joaquim and Servajean, Maximilien and Bonnet, Pierre and Munoz, Fran{\c c}ois and Joly, Alexis},
+  year = {2022},
+  journal = {Frontiers in Plant Science},
+  volume = {13},
+  issn = {1664-462X},
+  urldate = {2023-04-20},
+  abstract = {Species distribution models (SDMs) are widely used numerical tools that rely on correlations between geolocated presences (and possibly absences) and environmental predictors to model the ecological preferences of species. Recently, SDMs exploiting deep learning and remote sensing images have emerged and have demonstrated high predictive performance. In particular, it has been shown that one of the key advantages of these models (called deep-SDMs) is their ability to capture the spatial structure of the landscape, unlike prior models. In this paper, we examine whether the temporal dimension of remote sensing images can also be exploited by deep-SDMs. Indeed, satellites such as Sentinel-2 are now providing data with a high temporal revisit, and it is likely that the resulting time-series of images contain relevant information about the seasonal variations of the environment and vegetation. To confirm this hypothesis, we built a substantial and original dataset (called DeepOrchidSeries) aimed at modeling the distribution of orchids on a global scale based on Sentinel-2 image time series. It includes around 1 million occurrences of orchids worldwide, each being paired with a 12-month-long time series of high-resolution images (640 x 640 m RGB+IR patches centered on the geolocated observations). This ambitious dataset enabled us to train several deep-SDMs based on convolutional neural networks (CNNs) whose input was extended to include the temporal dimension. To quantify the contribution of the temporal dimension, we designed a novel interpretability methodology based on temporal permutation tests, temporal sampling, and temporal averaging. We show that the predictive performance of the model is greatly increased by the seasonality information contained in the temporal series. In particular, occurrence-poor species and diversity-rich regions are the ones that benefit the most from this improvement, revealing the importance of habitat's temporal dynamics to characterize species distribution.},
+  file = {C:\Users\armin\Zotero\storage\ZQCN3JWD\Estopinan et al. - 2022 - Deep Species Distribution Modeling From Sentinel-2.pdf}
+}
+
+@article{guillera-arroitaMySpeciesDistribution2015,
+  title = {Is My Species Distribution Model Fit for Purpose? {{Matching}} Data and Models to Applications},
+  shorttitle = {Is My Species Distribution Model Fit for Purpose?},
+  author = {{Guillera-Arroita}, Gurutzeta and {Lahoz-Monfort}, Jos{\'e} J. and Elith, Jane and Gordon, Ascelin and Kujala, Heini and Lentini, Pia E. and McCarthy, Michael A. and Tingley, Reid and Wintle, Brendan A.},
+  year = {2015},
+  journal = {Global Ecology and Biogeography},
+  volume = {24},
+  number = {3},
+  pages = {276--292},
+  issn = {1466-8238},
+  doi = {10.1111/geb.12268},
+  urldate = {2023-04-20},
+  abstract = {Species distribution models (SDMs) are used to inform a range of ecological, biogeographical and conservation applications. However, users often underestimate the strong links between data type, model output and suitability for end-use. We synthesize current knowledge and provide a simple framework that summarizes how interactions between data type and the sampling process (i.e. imperfect detection and sampling bias) determine the quantity that is estimated by a SDM. We then draw upon the published literature and simulations to illustrate and evaluate the information needs of the most common ecological, biogeographical and conservation applications of SDM outputs. We find that, while predictions of models fitted to the most commonly available observational data (presence records) suffice for some applications, others require estimates of occurrence probabilities, which are unattainable without reliable absence records. Our literature review and simulations reveal that, while converting continuous SDM outputs into categories of assumed presence or absence is common practice, it is seldom clearly justified by the application's objective and it usually degrades inference. Matching SDMs to the needs of particular applications is critical to avoid poor scientific inference and management outcomes. This paper aims to help modellers and users assess whether their intended SDM outputs are indeed fit for purpose.},
+  langid = {english},
+  keywords = {Ecological niche model,habitat model,imperfect detection,presence-absence,presence-background,presence-only,prevalence,sampling bias},
+  file = {C\:\\Users\\armin\\Zotero\\storage\\HDEBCFB3\\Guillera-Arroita et al. - 2015 - Is my species distribution model fit for purpose .pdf;C\:\\Users\\armin\\Zotero\\storage\\V7XYLIDL\\geb.html}
+}
+
+@inproceedings{heDeepResidualLearning2016,
+  title = {Deep {{Residual Learning}} for {{Image Recognition}}},
+  booktitle = {Proceedings of the {{IEEE Conference}} on {{Computer Vision}} and {{Pattern Recognition}}},
+  author = {He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},
+  year = {2016},
+  pages = {770--778},
+  urldate = {2023-05-12},
+  file = {C:\Users\armin\Zotero\storage\Y5KILQ5R\He et al. - 2016 - Deep Residual Learning for Image Recognition.pdf}
+}
+
+@article{ibrahimExplainableConvolutionalNeural2023,
+  title = {Explainable {{Convolutional Neural Networks}}: {{A Taxonomy}}, {{Review}}, and {{Future Directions}}},
+  shorttitle = {Explainable {{Convolutional Neural Networks}}},
+  author = {Ibrahim, Rami and Shafiq, M. Omair},
+  year = {2023},
+  month = oct,
+  journal = {ACM Computing Surveys},
+  volume = {55},
+  number = {10},
+  pages = {1--37},
+  issn = {0360-0300, 1557-7341},
+  doi = {10.1145/3563691},
+  urldate = {2023-05-31},
+  abstract = {Convolutional neural networks (CNNs)               have shown promising results and have outperformed classical machine learning techniques in tasks such as image classification and object recognition. Their human-brain like structure enabled them to learn sophisticated features while passing images through their layers. However, their lack of explainability led to the demand for interpretations to justify their predictions. Research on               Explainable AI               or               XAI               has gained momentum to provide knowledge and insights into neural networks. This study summarizes the literature to gain more understanding of explainability in CNNs (i.e., Explainable Convolutional Neural Networks). We classify models that made efforts to improve the CNNs interpretation. We present and discuss taxonomies for XAI models that modify CNN architecture, simplify CNN representations, analyze feature relevance, and visualize interpretations. We review various metrics used to evaluate XAI interpretations. In addition, we discuss the applications and tasks of XAI models. This focused and extensive survey develops a perspective on this area by addressing suggestions for overcoming XAI interpretation challenges, like models' generalization, unifying evaluation criteria, building robust models, and providing interpretations with semantic descriptions. Our taxonomy can be a reference to motivate future research in interpreting neural networks.},
+  langid = {english},
+  file = {C:\Users\armin\Zotero\storage\DYM7ZH3J\Ibrahim und Shafiq - 2023 - Explainable Convolutional Neural Networks A Taxon.pdf}
+}
+
+@article{lapuschkinUnmaskingCleverHans2019,
+  title = {Unmasking {{Clever Hans}} Predictors and Assessing What Machines Really Learn},
+  author = {Lapuschkin, Sebastian and W{\"a}ldchen, Stephan and Binder, Alexander and Montavon, Gr{\'e}goire and Samek, Wojciech and M{\"u}ller, Klaus-Robert},
+  year = {2019},
+  month = mar,
+  journal = {Nature Communications},
+  volume = {10},
+  number = {1},
+  pages = {1096},
+  publisher = {Nature Publishing Group},
+  issn = {2041-1723},
+  doi = {10.1038/s41467-019-08987-4},
+  urldate = {2023-06-14},
+  abstract = {Current learning machines have successfully solved hard application problems, reaching high accuracy and displaying seemingly intelligent behavior. Here we apply recent techniques for explaining decisions of state-of-the-art learning machines and analyze various tasks from computer vision and arcade games. This showcases a spectrum of problem-solving behaviors ranging from naive and short-sighted, to well-informed and strategic. We observe that standard performance evaluation metrics can be oblivious to distinguishing these diverse problem solving behaviors. Furthermore, we propose our semi-automated Spectral Relevance Analysis that provides a practically effective way of characterizing and validating the behavior of nonlinear learning machines. This helps to assess whether a learned model indeed delivers reliably for the problem that it was conceived for. Furthermore, our work intends to add a voice of caution to the ongoing excitement about machine intelligence and pledges to evaluate and judge some of these recent successes in a more nuanced manner.},
+  copyright = {2019 The Author(s)},
+  langid = {english},
+  keywords = {Applied mathematics,Computer science,Machine learning},
+  file = {C:\Users\armin\Zotero\storage\5IITK3RS\Lapuschkin et al. - 2019 - Unmasking Clever Hans predictors and assessing wha.pdf}
+}
+
+@article{lecunBackpropagationAppliedHandwritten1989a,
+  title = {Backpropagation {{Applied}} to {{Handwritten Zip Code Recognition}}},
+  author = {LeCun, Y. and Boser, B. and Denker, J. S. and Henderson, D. and Howard, R. E. and Hubbard, W. and Jackel, L. D.},
+  year = {1989},
+  month = dec,
+  journal = {Neural Computation},
+  volume = {1},
+  number = {4},
+  pages = {541--551},
+  issn = {0899-7667, 1530-888X},
+  doi = {10.1162/neco.1989.1.4.541},
+  urldate = {2023-04-21},
+  abstract = {The ability of learning networks to generalize can be greatly enhanced by providing constraints from the task domain. This paper demonstrates how such constraints can be integrated into a backpropagation network through the architecture of the network. This approach has been successfully applied to the recognition of handwritten zip code digits provided by the U.S. Postal Service. A single network learns the entire recognition operation, going from the normalized image of the character to the final classification.},
+  langid = {english},
+  file = {C:\Users\armin\Zotero\storage\V8XHUANZ\LeCun et al. - 1989 - Backpropagation Applied to Handwritten Zip Code Re.pdf}
+}
+
+@inproceedings{liuInterpretableDeepConvolutional2018,
+  title = {Interpretable {{Deep Convolutional Neural Networks}} via {{Meta-learning}}},
+  booktitle = {2018 {{International Joint Conference}} on {{Neural Networks}} ({{IJCNN}})},
+  author = {Liu, Xuan and Wang, Xiaoguang and Matwin, Stan},
+  year = {2018},
+  month = jul,
+  pages = {1--9},
+  issn = {2161-4407},
+  doi = {10.1109/IJCNN.2018.8489172},
+  abstract = {Model interpretability is a requirement in many applications in which crucial decisions are made by users relying on a model's outputs. The recent movement for ``algorithmic fairness'' also stipulates explainability, and therefore interpretability of learning models. And yet the most successful contemporary Machine Learning approaches, the Deep Neural Networks, produce models that are highly non-interpretable. We attempt to address this challenge by proposing a technique called CNN-INTE to interpret deep Convolutional Neural Networks (CNN) via meta-learning. In this work, we interpret a specific hidden layer of the deep CNN model on the MNIST image dataset. We use a clustering algorithm in a two-level structure to find the meta-level training data and Random Forest as base learning algorithms to generate the meta-level test data. The interpretation results are displayed visually via diagrams, which clearly indicates how a specific test instance is classified. Our method achieves global interpretation for all the test instances on the hidden layers without sacrificing the accuracy obtained by the original deep CNN model. This means our model is faithful to the original deep CNN model, which leads to reliable interpretations.},
+  keywords = {big data,Computational modeling,Convolutional Neural Network,deep learning,interpretability,Machine learning,Machine learning algorithms,Meta-learning,Prediction algorithms,Predictive models,TensorFlow,Training data,Visualization},
+  file = {C\:\\Users\\armin\\Zotero\\storage\\L7XICYQF\\Liu et al. - 2018 - Interpretable Deep Convolutional Neural Networks v.pdf;C\:\\Users\\armin\\Zotero\\storage\\6A8MJ87T\\metrics.html}
+}
+
+@inproceedings{liuSwinTransformerHierarchical2021,
+  title = {Swin {{Transformer}}: {{Hierarchical Vision Transformer Using Shifted Windows}}},
+  shorttitle = {Swin {{Transformer}}},
+  booktitle = {Proceedings of the {{IEEE}}/{{CVF International Conference}} on {{Computer Vision}}},
+  author = {Liu, Ze and Lin, Yutong and Cao, Yue and Hu, Han and Wei, Yixuan and Zhang, Zheng and Lin, Stephen and Guo, Baining},
+  year = {2021},
+  pages = {10012--10022},
+  urldate = {2023-05-12},
+  langid = {english},
+  file = {C:\Users\armin\Zotero\storage\A5AF7V8Q\Liu et al. - 2021 - Swin Transformer Hierarchical Vision Transformer .pdf}
+}
+
+@book{molnarInterpretableMachineLearning,
+  title = {Interpretable {{Machine Learning}}},
+  author = {Molnar, Christoph},
+  urldate = {2023-04-20},
+  abstract = {Machine learning algorithms usually operate as black boxes and it is unclear how they derived a certain decision. This book is a guide for practitioners to make machine learning decisions interpretable.},
+  file = {C:\Users\armin\Zotero\storage\7HN4SKA9\interpretable-ml-book.html}
+}
+
+@book{molnarInterpretableMachineLearning2020,
+  title = {Interpretable {{Machine Learning}}},
+  author = {Molnar, Christoph},
+  year = {2020},
+  publisher = {Lulu.com},
+  abstract = {This book is about making machine learning models and their decisions interpretable. After exploring the concepts of interpretability, you will learn about simple, interpretable models such as decision trees, decision rules and linear regression. Later chapters focus on general model-agnostic methods for interpreting black box models like feature importance and accumulated local effects and explaining individual predictions with Shapley values and LIME. All interpretation methods are explained in depth and discussed critically. How do they work under the hood? What are their strengths and weaknesses? How can their outputs be interpreted? This book will enable you to select and correctly apply the interpretation method that is most suitable for your machine learning project.},
+  googlebooks = {jBm3DwAAQBAJ},
+  isbn = {978-0-244-76852-2},
+  langid = {english}
+}
+
+@article{robertsCrossvalidationStrategiesData2017,
+  title = {Cross-Validation Strategies for Data with Temporal, Spatial, Hierarchical, or Phylogenetic Structure},
+  author = {Roberts, David R. and Bahn, Volker and Ciuti, Simone and Boyce, Mark S. and Elith, Jane and {Guillera-Arroita}, Gurutzeta and Hauenstein, Severin and {Lahoz-Monfort}, Jos{\'e} J. and Schr{\"o}der, Boris and Thuiller, Wilfried and Warton, David I. and Wintle, Brendan A. and Hartig, Florian and Dormann, Carsten F.},
+  year = {2017},
+  journal = {Ecography},
+  volume = {40},
+  number = {8},
+  pages = {913--929},
+  issn = {1600-0587},
+  doi = {10.1111/ecog.02881},
+  urldate = {2023-04-20},
+  abstract = {Ecological data often show temporal, spatial, hierarchical (random effects), or phylogenetic structure. Modern statistical approaches are increasingly accounting for such dependencies. However, when performing cross-validation, these structures are regularly ignored, resulting in serious underestimation of predictive error. One cause for the poor performance of uncorrected (random) cross-validation, noted often by modellers, are dependence structures in the data that persist as dependence structures in model residuals, violating the assumption of independence. Even more concerning, because often overlooked, is that structured data also provides ample opportunity for overfitting with non-causal predictors. This problem can persist even if remedies such as autoregressive models, generalized least squares, or mixed models are used. Block cross-validation, where data are split strategically rather than randomly, can address these issues. However, the blocking strategy must be carefully considered. Blocking in space, time, random effects or phylogenetic distance, while accounting for dependencies in the data, may also unwittingly induce extrapolations by restricting the ranges or combinations of predictor variables available for model training, thus overestimating interpolation errors. On the other hand, deliberate blocking in predictor space may also improve error estimates when extrapolation is the modelling goal. Here, we review the ecological literature on non-random and blocked cross-validation approaches. We also provide a series of simulations and case studies, in which we show that, for all instances tested, block cross-validation is nearly universally more appropriate than random cross-validation if the goal is predicting to new data or predictor space, or for selecting causal predictors. We recommend that block cross-validation be used wherever dependence structures exist in a dataset, even if no correlation structure is visible in the fitted model residuals, or if the fitted models account for such correlations.},
+  langid = {english},
+  file = {C\:\\Users\\armin\\Zotero\\storage\\C86YEZVZ\\Roberts et al. - 2017 - Cross-validation strategies for data with temporal.pdf;C\:\\Users\\armin\\Zotero\\storage\\9D6PB9LY\\ecog.html}
+}
+
+@article{ryoExplainableArtificialIntelligence2021,
+  title = {Explainable Artificial Intelligence Enhances the Ecological Interpretability of Black-Box Species Distribution Models},
+  author = {Ryo, Masahiro and Angelov, Boyan and Mammola, Stefano and Kass, Jamie M. and Benito, Blas M. and Hartig, Florian},
+  year = {2021},
+  journal = {Ecography},
+  volume = {44},
+  number = {2},
+  pages = {199--205},
+  issn = {1600-0587},
+  doi = {10.1111/ecog.05360},
+  urldate = {2023-04-20},
+  abstract = {Species distribution models (SDMs) are widely used in ecology, biogeography and conservation biology to estimate relationships between environmental variables and species occurrence data and make predictions of how their distributions vary in space and time. During the past two decades, the field has increasingly made use of machine learning approaches for constructing and validating SDMs. Model accuracy has steadily increased as a result, but the interpretability of the fitted models, for example the relative importance of predictor variables or their causal effects on focal species, has not always kept pace. Here we draw attention to an emerging subdiscipline of artificial intelligence, explainable AI (xAI), as a toolbox for better interpreting SDMs. xAI aims at deciphering the behavior of complex statistical or machine learning models (e.g. neural networks, random forests, boosted regression trees), and can produce more transparent and understandable SDM predictions. We describe the rationale behind xAI and provide a list of tools that can be used to help ecological modelers better understand complex model behavior at different scales. As an example, we perform a reproducible SDM analysis in R on the African elephant and showcase some xAI tools such as local interpretable model-agnostic explanation (LIME) to help interpret local-scale behavior of the model. We conclude with what we see as the benefits and caveats of these techniques and advocate for their use to improve the interpretability of machine learning SDMs.},
+  langid = {english},
+  keywords = {ecological modeling,explainable artificial intelligence,habitat suitability modeling,interpretable machine learning,species distribution model,xAI},
+  file = {C\:\\Users\\armin\\Zotero\\storage\\LCHDVH5B\\Ryo et al. - 2021 - Explainable artificial intelligence enhances the e.pdf;C\:\\Users\\armin\\Zotero\\storage\\XXEACZIM\\ecog.html}
+}
+
+@inproceedings{selvarajuGradCAMVisualExplanations2017,
+  title = {Grad-{{CAM}}: {{Visual Explanations}} from {{Deep Networks}} via {{Gradient-Based Localization}}},
+  shorttitle = {Grad-{{CAM}}},
+  booktitle = {2017 {{IEEE International Conference}} on {{Computer Vision}} ({{ICCV}})},
+  author = {Selvaraju, Ramprasaath R. and Cogswell, Michael and Das, Abhishek and Vedantam, Ramakrishna and Parikh, Devi and Batra, Dhruv},
+  year = {2017},
+  month = oct,
+  pages = {618--626},
+  issn = {2380-7504},
+  doi = {10.1109/ICCV.2017.74},
+  abstract = {We propose a technique for producing `visual explanations' for decisions from a large class of Convolutional Neural Network (CNN)-based models, making them more transparent. Our approach - Gradient-weighted Class Activation Mapping (Grad-CAM), uses the gradients of any target concept (say logits for `dog' or even a caption), flowing into the final convolutional layer to produce a coarse localization map highlighting the important regions in the image for predicting the concept. Unlike previous approaches, Grad- CAM is applicable to a wide variety of CNN model-families: (1) CNNs with fully-connected layers (e.g. VGG), (2) CNNs used for structured outputs (e.g. captioning), (3) CNNs used in tasks with multi-modal inputs (e.g. visual question answering) or reinforcement learning, without architectural changes or re-training. We combine Grad-CAM with existing fine-grained visualizations to create a high-resolution class-discriminative visualization, Guided Grad-CAM, and apply it to image classification, image captioning, and visual question answering (VQA) models, including ResNet-based architectures. In the context of image classification models, our visualizations (a) lend insights into failure modes of these models (showing that seemingly unreasonable predictions have reasonable explanations), (b) outperform previous methods on the ILSVRC-15 weakly-supervised localization task, (c) are more faithful to the underlying model, and (d) help achieve model generalization by identifying dataset bias. For image captioning and VQA, our visualizations show even non-attention based models can localize inputs. Finally, we design and conduct human studies to measure if Grad-CAM explanations help users establish appropriate trust in predictions from deep networks and show that Grad-CAM helps untrained users successfully discern a `stronger' deep network from a `weaker' one even when both make identical predictions. Our code is available at https: //github.com/ramprs/grad-cam/ along with a demo on CloudCV [2] and video at youtu.be/COjUB9Izk6E.},
+  keywords = {Cats,Computer architecture,Dogs,Knowledge discovery,Visualization},
+  file = {C\:\\Users\\armin\\Zotero\\storage\\5HPFY6ZL\\Selvaraju et al. - 2017 - Grad-CAM Visual Explanations from Deep Networks v.pdf;C\:\\Users\\armin\\Zotero\\storage\\XA9DYRPX\\8237336.html}
+}
+
+@book{silgeTidyModeling,
+  title = {Tidy {{Modeling}} with {{R}}},
+  author = {Silge, Max Kuhn {and} Julia},
+  urldate = {2023-04-20},
+  abstract = {The tidymodels framework is a collection of R packages for modeling and machine learning using tidyverse principles. This book provides a thorough introduction to how to use tidymodels, and an outline of good methodology and statistical practice for phases of the modeling process.},
+  file = {C:\Users\armin\Zotero\storage\YU6DZUH9\www.tmwr.org.html}
+}
+
+@article{valaviPredictivePerformancePresenceonly2022,
+  title = {Predictive Performance of Presence-Only Species Distribution Models: A Benchmark Study with Reproducible Code},
+  shorttitle = {Predictive Performance of Presence-Only Species Distribution Models},
+  author = {Valavi, Roozbeh and {Guillera-Arroita}, Gurutzeta and {Lahoz-Monfort}, Jos{\'e} J. and Elith, Jane},
+  year = {2022},
+  journal = {Ecological Monographs},
+  volume = {92},
+  number = {1},
+  pages = {e01486},
+  issn = {1557-7015},
+  doi = {10.1002/ecm.1486},
+  urldate = {2023-04-28},
+  abstract = {Species distribution modeling (SDM) is widely used in ecology and conservation. Currently, the most available data for SDM are species presence-only records (available through digital databases). There have been many studies comparing the performance of alternative algorithms for modeling presence-only data. Among these, a 2006 paper from Elith and colleagues has been particularly influential in the field, partly because they used several novel methods (at the time) on a global data set that included independent presence--absence records for model evaluation. Since its publication, some of the algorithms have been further developed and new ones have emerged. In this paper, we explore patterns in predictive performance across methods, by reanalyzing the same data set (225 species from six different regions) using updated modeling knowledge and practices. We apply well-established methods such as generalized additive models and MaxEnt, alongside others that have received attention more recently, including regularized regressions, point-process weighted regressions, random forests, XGBoost, support vector machines, and the ensemble modeling framework biomod. All the methods we use include background samples (a sample of environments in the landscape) for model fitting. We explore impacts of using weights on the presence and background points in model fitting. We introduce new ways of evaluating models fitted to these data, using the area under the precision-recall gain curve, and focusing on the rank of results. We find that the way models are fitted matters. The top method was an ensemble of tuned individual models. In contrast, ensembles built using the biomod framework with default parameters performed no better than single moderate performing models. Similarly, the second top performing method was a random forest parameterized to deal with many background samples (contrasted to relatively few presence records), which substantially outperformed other random forest implementations. We find that, in general, nonparametric techniques with the capability of controlling for model complexity outperformed traditional regression methods, with MaxEnt and boosted regression trees still among the top performing models. All the data and code with working examples are provided to make this study fully reproducible.},
+  langid = {english},
+  keywords = {boosted regression trees,down sampling,ecological niche model,ensemble modeling,imbalanced data,independent test data,machine learning,maxent,model evaluation,point process weighting,presence-background,random forest},
+  file = {C\:\\Users\\armin\\Zotero\\storage\\IAQYVNFW\\Valavi et al. - 2022 - Predictive performance of presence-only species di.pdf;C\:\\Users\\armin\\Zotero\\storage\\FQ32GS55\\ecm.html}
+}
+
+@misc{viloneExplainableArtificialIntelligence2020,
+  title = {Explainable {{Artificial Intelligence}}: A {{Systematic Review}}},
+  shorttitle = {Explainable {{Artificial Intelligence}}},
+  author = {Vilone, Giulia and Longo, Luca},
+  year = {2020},
+  month = oct,
+  number = {arXiv:2006.00093},
+  eprint = {2006.00093},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2006.00093},
+  urldate = {2023-06-14},
+  abstract = {Explainable Artificial Intelligence (XAI) has experienced a significant growth over the last few years. This is due to the widespread application of machine learning, particularly deep learning, that has led to the development of highly accurate models but lack explainability and interpretability. A plethora of methods to tackle this problem have been proposed, developed and tested. This systematic review contributes to the body of knowledge by clustering these methods with a hierarchical classification system with four main clusters: review articles, theories and notions, methods and their evaluation. It also summarises the state-of-the-art in XAI and recommends future research directions.},
+  archiveprefix = {arXiv},
+  keywords = {Computer Science - Artificial Intelligence,Computer Science - Machine Learning,I.2.0,I.2.6,I.2.m},
+  file = {C\:\\Users\\armin\\Zotero\\storage\\9H3IAZ27\\Vilone und Longo - 2020 - Explainable Artificial Intelligence a Systematic .pdf;C\:\\Users\\armin\\Zotero\\storage\\75MTGV9B\\2006.html}
+}
+
+@article{vonluxburgTutorialSpectralClustering2007,
+  title = {A Tutorial on Spectral Clustering},
+  author = {{von Luxburg}, Ulrike},
+  year = {2007},
+  month = dec,
+  journal = {Statistics and Computing},
+  volume = {17},
+  number = {4},
+  pages = {395--416},
+  issn = {1573-1375},
+  doi = {10.1007/s11222-007-9033-z},
+  urldate = {2023-06-15},
+  abstract = {In recent years, spectral clustering has become one of the most popular modern clustering algorithms. It is simple to implement, can be solved efficiently by standard linear algebra software, and very often outperforms traditional clustering algorithms such as the k-means algorithm. On the first glance spectral clustering appears slightly mysterious, and it is not obvious to see why it works at all and what it really does. The goal of this tutorial is to give some intuition on those questions. We describe different graph Laplacians and their basic properties, present the most common spectral clustering algorithms, and derive those algorithms from scratch by several different approaches. Advantages and disadvantages of the different spectral clustering algorithms are discussed.},
+  langid = {english},
+  keywords = {Graph Laplacian,Spectral clustering},
+  file = {C:\Users\armin\Zotero\storage\WICZ4DTP\von Luxburg - 2007 - A tutorial on spectral clustering.pdf}
+}
+
+@article{zhangNovelMultimodalSpecies2022,
+  title = {A {{Novel Multimodal Species Distribution Model Fusing Remote Sensing Images}} and {{Environmental Features}}},
+  author = {Zhang, Xiaojuan and Zhou, Yongxiu and Peng, Peihao and Wang, Guoyan},
+  year = {2022},
+  month = jan,
+  journal = {Sustainability},
+  volume = {14},
+  number = {21},
+  pages = {14034},
+  publisher = {Multidisciplinary Digital Publishing Institute},
+  issn = {2071-1050},
+  doi = {10.3390/su142114034},
+  urldate = {2023-05-11},
+  abstract = {Species distribution models (SDMs) are critical in conservation decision-making and ecological or biogeographical inference. Accurately predicting species distribution can facilitate resource monitoring and management for sustainable regional development. Currently, species distribution models usually use a single source of information as input for the model. To determine a solution to the lack of accuracy of the species distribution model with a single information source, we propose a multimodal species distribution model that can input multiple information sources simultaneously. We used ResNet50 and Transformer network structures as the backbone for multimodal data modeling. The model's accuracy was tested using the GEOLIFE2020 dataset, and our model's accuracy is state-of-the-art (SOTA). We found that the prediction accuracy of the multimodal species distribution model with multiple data sources of remote sensing images, environmental variables, and latitude and longitude information as inputs (29.56\%) was higher than that of the model with only remote sensing images or environmental variables as inputs (25.72\% and 21.68\%, respectively). We also found that using a Transformer network structure to fuse data from multiple sources can significantly improve the accuracy of multimodal models. We present a novel multimodal model that fuses multiple sources of information as input for species distribution prediction to advance the research progress of multimodal models in the field of ecology.},
+  copyright = {http://creativecommons.org/licenses/by/3.0/},
+  langid = {english},
+  keywords = {deep learning,feature fusion,high-resolution remote sensing images,multimodal,species distribution models,Transformer network},
+  file = {C:\Users\armin\Zotero\storage\8U6FPCK8\Zhang et al. - 2022 - A Novel Multimodal Species Distribution Model Fusi.pdf}
+}
+
+@misc{zotero-72,
+  type = {Misc}
+}
