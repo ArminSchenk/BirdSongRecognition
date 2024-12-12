@@ -45,7 +45,7 @@ mel_transformer <- transform_mel_spectrogram(sample_rate = sample_rate,
                                              n_mels = n_mels,
                                              power = power)
 
-spectra <- array(0, dim=c(nrow(metadata), 1, n_mels, n_time_bins))
+spectra <- array(0, dim=c(nrow(metadata), 1, n_mels, n_time_bins), dimnames = list(rownames(metadata)))
 rm_indices <- c()
 i <- 0
 print(nrow(metadata))
@@ -103,6 +103,10 @@ for(i in 1:nrow(metadata)) {
   else spectra[i,,,] <- spectra[i,,,] - min
 }
 
+metadata[,"primary_label"] <- factor(metadata[,"primary_label"])
+
+saveRDS(spectra, file = "data/spectra.rds")
+saveRDS(metadata, file = "data/metadata.rds")
 
 rm(audio,
    audio_length,
