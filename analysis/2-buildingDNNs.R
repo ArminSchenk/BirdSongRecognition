@@ -1,0 +1,50 @@
+library(cito)
+library(torch)
+
+# Set GPU
+Sys.setenv(CUDA_VISIBLE_DEVICES=1)
+
+# Seed
+set.seed(42)
+torch::torch_manual_seed(42)
+
+# Load data
+if(!exists("spectra")) spectra <- readRDS("data/spectra.rds")
+if(!exists("metadata")) metadata <- readRDS("data/metadata.rds")
+if(!exists("folds")) folds <- readRDS("data/folds.rds")
+
+# Dense Neural Networks
+pred_response <- vector("list", 5)
+pred_class <- vector("list", 5)
+for (i in 1:5) {
+  dnn.fit <- dnn(primary_label ~ longitude + latitude,
+                 data = metadata[unlist(folds[-i]),],
+                 loss = "softmax",
+                 validation = 0.1,
+                 epochs = 100,
+                 early_stopping = 3,
+                 device = "cuda",
+                 batchsize = 16)
+  
+  dnn.fit$data <- NULL
+  dnn.fit$data <- list(ylvls=levels(metadata[,"primary_label"]))
+  
+  gc()
+  torch::cuda_empty_cache()
+  gc()
+  torch::cuda_empty_cache()
+  
+  pred_response[[i]] <- predict(dnn.fit, newdata=metadata[folds[[i]],], type = "response")
+  pred_class[[i]] <- predict(dnn.fit, newdata=metadata[folds[[i]],], type = "class")
+  
+  saveRDS(dnn.fit, file = paste0("analysis/results/models/DNN_fold", i, ".rds"))
+  
+  rm(dnn.fit)
+  gc()
+  torch::cuda_empty_cache()
+  gc()
+  torch::cuda_empty_cache()
+}
+
+saveRDS(pred_class, file = "analysis/results/predictions/DNN_pred_class.rds")
+saveRDS(pred_response, file = "analysis/results/predictions/DNN_pred_response.rds")

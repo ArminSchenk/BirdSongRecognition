@@ -1,5 +1,6 @@
 library(torchaudio)
 library(torch)
+source("analysis/utils.R")
 
 # Seed
 set.seed(42)
@@ -105,8 +106,12 @@ for(i in 1:nrow(metadata)) {
 
 metadata[,"primary_label"] <- factor(metadata[,"primary_label"])
 
+# Stratified k-fold cross-validation indices
+folds <- stratified_kfold(metadata, "primary_label", 5)
+
 saveRDS(spectra, file = "data/spectra.rds")
 saveRDS(metadata, file = "data/metadata.rds")
+saveRDS(folds, file = "data/folds.rds")
 
 rm(audio,
    audio_length,
@@ -137,4 +142,3 @@ rm(audio,
    sample_rate,
    target_length,
    win_length)
-
