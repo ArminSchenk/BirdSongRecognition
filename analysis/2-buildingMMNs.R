@@ -14,8 +14,8 @@ if(!exists("metadata")) metadata <- readRDS("data/metadata.rds")
 if(!exists("folds")) folds <- readRDS("data/folds.rds")
 
 # Multimodal Neural Networks
-pred_response <- vector("list", 5)
-pred_class <- vector("list", 5)
+pred_train <- vector("list", 5)
+pred_valid <- vector("list", 5)
 for (i in 1:5) {
   mmn.fit <- mmn(metadata[,"primary_label"] ~ cnn(X=spectra, architecture=create_architecture(transfer("mobilenet_v2", freeze=F))) 
                  + dnn(~ longitude + latitude, data=metadata),
@@ -28,7 +28,6 @@ for (i in 1:5) {
                  device = "cuda",
                  batchsize = 16)
   
-  mmn.fit$data <- NULL
   mmn.fit$data <- list(ylvls=levels(metadata[,"primary_label"]))
   
   gc()
@@ -36,8 +35,8 @@ for (i in 1:5) {
   gc()
   torch::cuda_empty_cache()
   
-  pred_response[[i]] <- predict(mmn.fit, newdata=list(spectra=spectra[folds[[i]],,,,drop=F], metadata=metadata[folds[[i]],]), type = "response")
-  pred_class[[i]] <- predict(mmn.fit, newdata=list(spectra=spectra[folds[[i]],,,,drop=F], metadata=metadata[folds[[i]],]), type = "class")
+  pred_train[[i]] <- predict(mmn.fit, newdata=list(spectra=spectra[unlist(folds[-i]),,,,drop=F], metadata=metadata[unlist(folds[-i]),]), type = "response")
+  pred_valid[[i]] <- predict(mmn.fit, newdata=list(spectra=spectra[folds[[i]],,,,drop=F], metadata=metadata[folds[[i]],]), type = "response")
 
   saveRDS(mmn.fit, file = paste0("analysis/results/models/MMN_fold", i, ".rds"))
   
@@ -48,5 +47,5 @@ for (i in 1:5) {
   torch::cuda_empty_cache()
 }
 
-saveRDS(pred_class, file = "analysis/results/predictions/MMN_pred_class.rds")
-saveRDS(pred_response, file = "analysis/results/predictions/MMN_pred_response.rds")
+saveRDS(pred_train, file = "analysis/results/predictions/MMN_pred_train.rds")
+saveRDS(pred_valid, file = "analysis/results/predictions/MMN_pred_valid.rds")
