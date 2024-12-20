@@ -183,20 +183,27 @@ Keywords: convolutional neural network, multimodal neural network, machine learn
 \addcontentsline{toc}{chapter}{Introduction}
 \pagenumbering{arabic}
 \setcounter{page}{1}
-Deep neural networks have achieved state-of-the-art performance in many domains (e.g. image recognition [Zitat], natural language processing [Zitat]), making them also appealing for many ecological applications such as species distribution models (SDMs) [Zitat] and sound analysis [Zitat].
+In recent years, deep neural networks have made remarkable breakthroughs across diverse scientific fields (\cite{jordanMachineLearningTrends2015}). In computer vision, models like Mask R-CNN (\cite{heMaskRCNN2017}) have revolutionized object detection in images. In autonomous driving, deep learning has become essential for navigation and decision-making (\cite{bojarskiEndEndLearning2016}). AlphaZero (\cite{silverMasteringChessShogi2017}) demonstrated superhuman levels of play in strategic games such as chess, shogi and go, while AlphaFold (\cite{jumperHighlyAccurateProtein2021}) solved the long-standing challenge of predicting the 3D structure of proteins from their amino acid sequence. In natural language processing, large language models (e.g., GPT-3, \cite{brownLanguageModelsAre2020}) enabled applications like sentiment analysis, text summarization and conversational AI such as ChatGPT (\url{https://chat.openai.com}). This progress in deep learning has been driven by the ever-increasing availability of data and computing resources, as well as advances in learning algorithms and network architectures, such as transformers (\cite{vaswaniAttentionAllYou2017}).
 
-Most of these networks are implemented in extensive deep learning frameworks such as \pkg{tensorflow} [Zitat] and \pkg{torch} [Zitat], which offer immense flexibility necessary for building high-end networks such as large language models (e.g. GPT-3 [Zitat]). However, this level of flexibility is not needed for many standard applications and makes the frameworks very complex, which can discourage ecologists and other researchers without extensive programming and machine learning expertise from using neural networks.
+Deep learning has also found widespread applications in ecology, advancing tasks such as species distribution modeling, prediction of species interactions, and ecosystem monitoring (\cite{chenEndEndLearningDeep2018}; \cite{wilkinsonComparisonJointSpecies2019};
+\cite{pichlerMachineLearningAlgorithms2020};  \cite{pichlerMachineLearningDeep2023}; \cite{borowiecDeepLearningTool2022}; \cite{tuiaPerspectivesMachineLearning2022}; \cite{christinApplicationsDeepLearning2019}). While traditionally scalar data such as climate variables, soil properties or species traits have been used to address ecological questions, the growing availability of structured data is transforming the field. Modern monitoring technologies, including camera traps, aerial drones, satellites, and acoustic sensors, generate large datasets in the form of images, videos, and audio recordings. Most of the information in these datasets lies in their spatial or temporal structure, making it crucial to use specialized architectures that can capture these patterns effectively. Convolutional neural networks (CNNs, \cite{lecunBackpropagationAppliedHandwritten1989a}), designed to detect and hierarchically combine spatial features, have thus become the most widely used network architecture in ecological applications. They have been applied to tasks such as automatic species recognition, biodiversity monitoring, habitat mapping, land cover classification, and the detection of invasive species (\cite{gomezvillaAutomaticWildAnimal2017}; \cite{norouzzadehAutomaticallyIdentifyingCounting2018}; \cite{tabakMachineLearningClassify2019}; \cite{salamonFusingShallowDeep2017}; \cite{liDeepLearningRemote2018}; \cite{kattenbornConvolutionalNeuralNetworks2019}; \cite{qianUAVDeepConvolutional2020}).
 
-The \pkg{cito} R package was developed to address this problem. In its initial release (\cite{amesoderCitoPackageTraining2024}) it was demonstrated how dense neural networks (DNNs) can be built and trained in a single line of code using \pkg{cito}. Additionally, \pkg{cito} implements many important functionalities absent in similar R packages (\pkg{brulee} [Zitat], \pkg{h2o} [Zitat], \pkg{neuralnet} [Zitat] and \pkg{nnet} [Zitat]) such as GPU support, bootstrapping and various explainable AI (xAI) metrics.
+At the core of CNNs are convolutional layers that apply small, localized filters (also called kernels) that scan across the input to capture patterns such as edges, textures, and shapes. Subsequent convolutional layers then combine these patterns hierarchically, allowing the CNN to capture increasingly complex patterns such as objects and people. CNNs also often use pooling layers (e.g. max-pooling) to downsample the resulting feature maps by combining values in local regions while retaining significant information. This not only makes the network more computationally efficient, but also helps to avoid overfitting problems (\cite{liSurveyConvolutionalNeural2022}).
 
-However, by design DNNs are limited to scalar input data, which makes them unusable for certain applications such as image classification. For these tasks a neural network architecture that allows tensors as input data is necessary.
-As a solution, \pkg{cito} has been extended to include two new architectures: convolutional neural networks (CNNs) and multimodal neural networks (MMNs), which combine the DNN and CNN architectures to allow the processing of multiple types of data in the same network (e.g. remote sensing images and environmental variables).
+More recently, even multimodal neural networks (MMNs) have been used in ecology. MMNs combine different neural network architectures to extract and combine features from different data types. For example, an MMN consisting of a dense neural network (DNN) and a CNN can be used to process tabular data (e.g. environmental variables) and image data (e.g. satellite images) at the same time (\cite{zhangNovelMultimodalSpecies2022}; \cite{hu2024introduction}).
 
-Here, I introduce these new features of \pkg{cito} and demonstrate, using the example of bird song recognition, how they make a wider range of applications accessible to researchers with limited expertise in machine learning.
+CNNs and MMNs, like most state-of-the-art networks, are typically built using extensive deep learning frameworks such as \pkg{TensorFlow} (\cite{abadiTensorFlowSystemLargeScale2016}) and \pkg{PyTorch} (\cite{paszkePyTorchImperativeStyle2019}), which offer powerful tools for building and training sophisticated models. However, these frameworks, while highly flexible and efficient, are notoriously difficult to use due to their complexity and steep learning curve. To address this problem, several frontends have been developed with the aim to simplify their usage, including the popular R (\url{www.r-project.org}) frontends \pkg{keras} (\cite{chollet2015keras}) for TensorFlow and \pkg{luz} (\cite{falbelLuzHigherLevel2024}) for PyTorch. Despite these efforts, these frontends remain challenging to use, especially for ecologists that are accustomed to the intuitive and user-friendly design of other R packages used for statistical analysis. For instance, packages such as \pkg{ranger} and \pkg{lme4} allow traditional machine learning models like random forest and statistical models like mixed-effect models to be fitted in a single line of code.
 
+Several R packages have been developed with the goal to imitate this user-friendly design for deep learning. Of these packages, \pkg{cito} (\cite{amesoderCitoPackageTraining2024}) stands out in particular. Not only does it provide a user-friendly interface to build and train deep neural networks in a single line of code, it also provides many important functionalities ranging from regularization techniques that control the bias-variance trade-off (e.g., elastic net regularization, dropout) to modern training techniques that help with convergence (e.g., early stopping, learning rate scheduler). \pkg{cito} uses \pkg{torch} (\cite{falbelTorchTensorsNeural2024}), a native implementation of the PyTorch framework in R, as backend, taking full advantage of its numerically optimized functions and the integrated support of graphic processing units (GPUs), which is crucial for the efficient training of large neural networks.
 
-\chapter*{Extending the \pkg{cito} package}
-\addcontentsline{toc}{chapter}{Extending the \pkg{cito} package}
+However, the current version of \pkg{cito} only supports dense neural networks (DNNs), an architecture in which every input neuron is connected to every neuron in subsequent layers. By design, DNNs are invariant to the positional arrangement of input features, which makes them work best on unstructured, tabular data, but also unsuitable for spatially structured data, such as images, where the relationships between neighboring pixels contain crucial information. As a result, \pkg{cito} is unable to address the ecological tasks that arose with the trend of spatially structured data.
+
+Here, I present the new implementations of CNNs and MMNs in the \pkg{cito} package. In line with the design philosophy of \pkg{cito}, I provide user-friendly functions that allow building and training CNNs and MMNs with minimal code, while also offering a high degree of customization. In addition to the functionalities known from the DNN implementation of \pkg{cito}, such as GPU support, deep learning techniques (e.g., regularization, learning rate scheduler) and downstream functionalities (e.g. continuing training, architecture visualization), I also implemented the option to use pre-trained models for transfer learning. This makes \pkg{cito} the first R package, that allows building and training CNNs and MMNs as intuitively as other R packages do for traditional methods like random forest.
+
+In the remainder of this work, I introduce the new functions, discuss design choices and validation, and demonstrate the new possible applications of \pkg{cito} using the example of bird species classification based on audio data.
+
+\chapter*{Introducing the \pkg{cito} \fn{cnn} function}
+\addcontentsline{toc}{chapter}{Introducing the \pkg{cito} \fn{cnn} function}
 Overview
 
 \section*{Specifying CNN architectures}
@@ -328,9 +335,11 @@ The final tests ensure that transfer learning is working properly. First, it is 
 
 The tests for the MMN architecture are mostly the same, with the main difference being that instead of a CNN, an MMN consisting of a CNN and a DNN is trained.
 
+\section*{Package availability}
+\addcontentsline{toc}{section}{Package availability}
 \chapter*{Case study}
 \addcontentsline{toc}{chapter}{Case study}
-\section*{Data}
+\section*{Data (and Code)}
 \addcontentsline{toc}{section}{Data}
 \section*{Architecture}
 \addcontentsline{toc}{section}{Architecture}
@@ -340,24 +349,31 @@ The tests for the MMN architecture are mostly the same, with the main difference
 \chapter*{Conclusion}
 \addcontentsline{toc}{chapter}{Conclusion}
 
-
-
+\chapter*{Acknowledgments}
+\addcontentsline{toc}{chapter}{Acknowledgments}
 
 
 \renewcommand{\bibname}{References}
 \addcontentsline{toc}{chapter}{References} % Add Bibliography to the table of contents
 % this is the style file. If you need to change something, google if the file you need is already there. If not (very uncommon) google makebst.
-\bibliographystyle{plain} 
+\bibliographystyle{chicago} 
 \bibliography{../literature/literature} % Reference the BibTeX library file
 
-\chapter*{Appendix}
-\addcontentsline{toc}{chapter}{Appendix}
-\section*{Code and data availability statement}
-\addcontentsline{toc}{section}{Code and data availability statement}
+\chapter*{Code and data availability statement}
 A stable version of the \pkg{cito} package can be downloaded from CRAN. The development branch can be found on GitHub: \url{https://github.com/citoverse/cito}. Documentation and the rendered vignettes can be found on the CRAN website of the package \url{ https://cran.r-project.org/web/packages/cito/index.html}. The dataset processed in the case study is available from the BirdCLEF 2024 kaggle competition (\cite{birdclef-2024}). The code to replicate the case study can be found on GitHub: \url{https://github.com/ArminSchenk/BirdSongRecognition}.
-\section*{Declaration of independence}
-\addcontentsline{toc}{section}{Declaration of independence}
+\chapter*{Declaration of independence}
+\addcontentsline{toc}{chapter}{Declaration of independence}
 Ich habe die Arbeit selbstständig verfasst, keine anderen als die angegebenen Quellen und Hilfsmittel benutzt und bisher keiner anderen Prüfungsbehörde vorgelegt. Außerdem bestätige ich hiermit, dass die vorgelegten Druckexemplare und die vorgelegte elektronische Version der Arbeit identisch sind, dass ich über wissenschaftlich korrektes Arbeiten und Zitieren aufgeklärt wurde und dass ich von den in §26 Abs. 5 vorgesehenen Rechtsfolgen Kenntnis habe.
+
+\vspace{2cm}
+\begin{flushright}
+	\renewcommand{\arraystretch}{1.3}
+	\begin{tabular}{ccc}
+		\hline
+		\hspace*{2cm}&Unterschrift&\hspace*{2cm}\\
+	\end{tabular}
+\end{flushright}
+
 
 % Note: all files can be anywhere, just give the full path.
 
