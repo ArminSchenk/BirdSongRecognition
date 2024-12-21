@@ -2,6 +2,9 @@ library(ggplot2)
 library(ggbeeswarm)
 library(pROC)
 
+# Seed
+set.seed(42)
+
 get_auc <- function(pred, metadata) {
   pred <- do.call(rbind, pred)
   true <- metadata[rownames(pred), "primary_label"]
@@ -15,30 +18,29 @@ get_auc <- function(pred, metadata) {
 
 # Load data
 if(!exists("metadata")) metadata <- readRDS("data/metadata.rds")
-# DNN_pred_train <- readRDS("analysis/results/predictions/DNN_pred_train.rds")
-# CNN_pred_train <- readRDS("analysis/results/predictions/CNN_pred_train.rds")
+DNN_pred_train <- readRDS("analysis/results/predictions/DNN_pred_train.rds")
+CNN_pred_train <- readRDS("analysis/results/predictions/CNN_pred_train.rds")
 # MMN_pred_train <- readRDS("analysis/results/predictions/MMN_pred_train.rds")
-#DNN_pred_valid <- readRDS("analysis/results/predictions/DNN_pred_valid.rds")
+DNN_pred_valid <- readRDS("analysis/results/predictions/DNN_pred_valid.rds")
 CNN_pred_valid <- readRDS("analysis/results/predictions/CNN_pred_valid.rds")
-MMN_pred_valid <- readRDS("analysis/results/predictions/MMN_pred_valid.rds")
+# MMN_pred_valid <- readRDS("analysis/results/predictions/MMN_pred_valid.rds")
 
 tab <- sort(table(metadata[["primary_label"]]))
 classes <- names(tab)
 
-# DNN_auc_train <- get_auc(DNN_pred_train, metadata)[classes]
-# CNN_auc_train <- get_auc(CNN_pred_train, metadata)[classes]
+DNN_auc_train <- get_auc(DNN_pred_train, metadata)[classes]
+CNN_auc_train <- get_auc(CNN_pred_train, metadata)[classes]
 # MMN_auc_train <- get_auc(MMN_pred_train, metadata)[classes]
-#DNN_auc_valid <- get_auc(DNN_pred_valid, metadata)[classes]
+DNN_auc_valid <- get_auc(DNN_pred_valid, metadata)[classes]
 CNN_auc_valid <- get_auc(CNN_pred_valid, metadata)[classes]
-MMN_auc_valid <- get_auc(MMN_pred_valid, metadata)[classes]
+# MMN_auc_valid <- get_auc(MMN_pred_valid, metadata)[classes]
 
 # Example Data: Replace these with your actual AUC values
-a <- min(c(CNN_auc_valid, MMN_auc_valid))
-b <- max(c(CNN_auc_valid, MMN_auc_valid))
-DNN_auc_valid <- runif(177, a, b)
-DNN_auc_train <- runif(177, a, b)
-CNN_auc_train <- runif(177, a, b)
+a <- min(c(CNN_auc_valid, DNN_auc_valid, CNN_auc_train, DNN_auc_train))
+b <- max(c(CNN_auc_valid, DNN_auc_valid, CNN_auc_train, DNN_auc_train))
 MMN_auc_train <- runif(177, a, b)
+MMN_auc_valid <- runif(177, a, b)
+
 
 # Combine data into a data frame
 auc_data <- data.frame(
@@ -51,21 +53,28 @@ auc_data <- data.frame(
 pdf("analysis/results/figures/auc_beehive.pdf", width = 20, height = 10)
 
 beehive_plot <- ggplot(auc_data, aes(x = DataType, y = AUC, color = ClassSize)) +
-  geom_beeswarm(cex = 2, alpha = 1) + 
-  facet_wrap(~Model, scales = "fixed") +
-  scale_color_gradient(low = "#FFDDDD", high = "red") +
+  geom_jitter(width = 0.3, height = 0, size = 2, alpha = 0.8) +
+  geom_boxplot(
+    aes(group = interaction(DataType, Model)), 
+    width = 0.7, 
+    outlier.shape = NA, # Avoid overlapping outliers with jitter
+    alpha = 0 # Make boxplot semi-transparent
+  ) +
+  facet_wrap(~Model, scales = "fixed", nrow = 1, strip.position = "top") +
+  scale_color_viridis_c(option = "viridis", direction = -1) +
   theme_minimal() +
   labs(
-    #title = "Beehive Plot of AUC Values by Class Size",
-    x = "",
-    y = "AUC",
+    x = NULL, # Remove x-axis label
+    y = "AUC", # Y-axis label
     color = "Class Size"
   ) +
   theme(
     text = element_text(size = 14),
-    strip.text = element_text(size = 12, face = "bold"),
-    panel.border = element_rect(color = "black", fill = NA, size = 1) # Add a black border
-    axis.title.y = element_text(margin = margin(r = 100), size = 14) # Move y-axis label left
+    strip.text = element_text(size = 16, face = "bold"), # Increase model type label size
+    axis.title.y = element_text(size = 20, margin = margin(r = 10)), # Increase y-axis label size
+    axis.text.x = element_text(size = 14), # Increase x-axis label size
+    panel.border = element_rect(color = "black", fill = NA, size = 1),
+    panel.spacing = unit(1, "lines")
   )
 
 # Print the plot
