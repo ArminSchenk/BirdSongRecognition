@@ -360,6 +360,16 @@
   file = {C\:\\Users\\armin\\Zotero\\storage\\HDEBCFB3\\Guillera-Arroita et al. - 2015 - Is my species distribution model fit for purpose .pdf;C\:\\Users\\armin\\Zotero\\storage\\V7XYLIDL\\geb.html}
 }
 
+@inproceedings{haraCanSpatiotemporal3D2018,
+  title = {Can {{Spatiotemporal 3D CNNs Retrace}} the {{History}} of {{2D CNNs}} and {{ImageNet}}?},
+  booktitle = {Proceedings of the {{IEEE Conference}} on {{Computer Vision}} and {{Pattern Recognition}}},
+  author = {Hara, Kensho and Kataoka, Hirokatsu and Satoh, Yutaka},
+  year = {2018},
+  pages = {6546--6555},
+  urldate = {2024-12-19},
+  file = {C:\Users\armin\Zotero\storage\TR8BYD79\Hara et al. - 2018 - Can Spatiotemporal 3D CNNs Retrace the History of .pdf}
+}
+
 @inproceedings{heDeepResidualLearning2016,
   title = {Deep {{Residual Learning}} for {{Image Recognition}}},
   booktitle = {Proceedings of the {{IEEE Conference}} on {{Computer Vision}} and {{Pattern Recognition}}},
@@ -488,6 +498,40 @@
   langid = {english},
   keywords = {Biodiversity,Community ecology,Forestry,Invasive species},
   file = {C:\Users\armin\Zotero\storage\5XCQLN8N\Kattenborn et al. - 2019 - Convolutional Neural Networks enable efficient, ac.pdf}
+}
+
+@manual{keydanaTorchaudioInterfacePytorchs2023,
+  type = {Manual},
+  title = {Torchaudio: {{R Interface}} to 'pytorch''s 'Torchaudio'},
+  author = {Keydana, Sigrid and Damiani, Athos and Falbel, Daniel},
+  year = {2023}
+}
+
+@inproceedings{kopukluResourceEfficient3D2019,
+  title = {Resource {{Efficient 3D Convolutional Neural Networks}}},
+  booktitle = {Proceedings of the {{IEEE}}/{{CVF International Conference}} on {{Computer Vision Workshops}}},
+  author = {Kopuklu, Okan and Kose, Neslihan and Gunduz, Ahmet and Rigoll, Gerhard},
+  year = {2019},
+  pages = {0--0},
+  urldate = {2024-12-19},
+  file = {C:\Users\armin\Zotero\storage\Z5HYJPIB\Kopuklu et al. - 2019 - Resource Efficient 3D Convolutional Neural Network.pdf}
+}
+
+@misc{kopukluResourceEfficient3D2021,
+  title = {Resource {{Efficient 3D Convolutional Neural Networks}}},
+  author = {K{\"o}p{\"u}kl{\"u}, Okan and Kose, Neslihan and Gunduz, Ahmet and Rigoll, Gerhard},
+  year = {2021},
+  month = oct,
+  number = {arXiv:1904.02422},
+  eprint = {1904.02422},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.1904.02422},
+  urldate = {2024-12-19},
+  abstract = {Recently, convolutional neural networks with 3D kernels (3D CNNs) have been very popular in computer vision community as a result of their superior ability of extracting spatio-temporal features within video frames compared to 2D CNNs. Although there has been great advances recently to build resource efficient 2D CNN architectures considering memory and power budget, there is hardly any similar resource efficient architectures for 3D CNNs. In this paper, we have converted various well-known resource efficient 2D CNNs to 3D CNNs and evaluated their performance on three major benchmarks in terms of classification accuracy for different complexity levels. We have experimented on (1) Kinetics-600 dataset to inspect their capacity to learn, (2) Jester dataset to inspect their ability to capture motion patterns, and (3) UCF-101 to inspect the applicability of transfer learning. We have evaluated the run-time performance of each model on a single Titan XP GPU and a Jetson TX2 embedded system. The results of this study show that these models can be utilized for different types of real-world applications since they provide real-time performance with considerable accuracies and memory usage. Our analysis on different complexity levels shows that the resource efficient 3D CNNs should not be designed too shallow or narrow in order to save complexity. The codes and pretrained models used in this work are publicly available.},
+  archiveprefix = {arXiv},
+  keywords = {Computer Science - Computer Vision and Pattern Recognition},
+  file = {C\:\\Users\\armin\\Zotero\\storage\\3YGRDS7Y\\Köpüklü et al. - 2021 - Resource Efficient 3D Convolutional Neural Network.pdf;C\:\\Users\\armin\\Zotero\\storage\\VHI7S6SN\\1904.html}
 }
 
 @article{lapuschkinUnmaskingCleverHans2019,
@@ -805,6 +849,24 @@
   file = {C\:\\Users\\armin\\Zotero\\storage\\TVIUMYVR\\Salamon et al. - 2017 - Fusing shallow and deep learning for bioacoustic b.pdf;C\:\\Users\\armin\\Zotero\\storage\\LEFKC826\\7952134.html}
 }
 
+@misc{sandlerMobileNetV2InvertedResiduals2019,
+  title = {{{MobileNetV2}}: {{Inverted Residuals}} and {{Linear Bottlenecks}}},
+  shorttitle = {{{MobileNetV2}}},
+  author = {Sandler, Mark and Howard, Andrew and Zhu, Menglong and Zhmoginov, Andrey and Chen, Liang-Chieh},
+  year = {2019},
+  month = mar,
+  number = {arXiv:1801.04381},
+  eprint = {1801.04381},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.1801.04381},
+  urldate = {2024-12-19},
+  abstract = {In this paper we describe a new mobile architecture, MobileNetV2, that improves the state of the art performance of mobile models on multiple tasks and benchmarks as well as across a spectrum of different model sizes. We also describe efficient ways of applying these mobile models to object detection in a novel framework we call SSDLite. Additionally, we demonstrate how to build mobile semantic segmentation models through a reduced form of DeepLabv3 which we call Mobile DeepLabv3. The MobileNetV2 architecture is based on an inverted residual structure where the input and output of the residual block are thin bottleneck layers opposite to traditional residual models which use expanded representations in the input an MobileNetV2 uses lightweight depthwise convolutions to filter features in the intermediate expansion layer. Additionally, we find that it is important to remove non-linearities in the narrow layers in order to maintain representational power. We demonstrate that this improves performance and provide an intuition that led to this design. Finally, our approach allows decoupling of the input/output domains from the expressiveness of the transformation, which provides a convenient framework for further analysis. We measure our performance on Imagenet classification, COCO object detection, VOC image segmentation. We evaluate the trade-offs between accuracy, and number of operations measured by multiply-adds (MAdd), as well as the number of parameters},
+  archiveprefix = {arXiv},
+  keywords = {Computer Science - Computer Vision and Pattern Recognition},
+  file = {C\:\\Users\\armin\\Zotero\\storage\\DGJYM2R2\\Sandler et al. - 2019 - MobileNetV2 Inverted Residuals and Linear Bottlen.pdf;C\:\\Users\\armin\\Zotero\\storage\\MH2SQ7H8\\1801.html}
+}
+
 @inproceedings{selvarajuGradCAMVisualExplanations2017,
   title = {Grad-{{CAM}}: {{Visual Explanations}} from {{Deep Networks}} via {{Gradient-Based Localization}}},
   shorttitle = {Grad-{{CAM}}},
@@ -961,6 +1023,26 @@
   langid = {english},
   keywords = {Graph Laplacian,Spectral clustering},
   file = {C:\Users\armin\Zotero\storage\WICZ4DTP\von Luxburg - 2007 - A tutorial on spectral clustering.pdf}
+}
+
+@article{weimannTransferLearningECG2021,
+  title = {Transfer Learning for {{ECG}} Classification},
+  author = {Weimann, Kuba and Conrad, Tim O. F.},
+  year = {2021},
+  month = mar,
+  journal = {Scientific Reports},
+  volume = {11},
+  number = {1},
+  pages = {5251},
+  publisher = {Nature Publishing Group},
+  issn = {2045-2322},
+  doi = {10.1038/s41598-021-84374-8},
+  urldate = {2024-12-19},
+  abstract = {Remote monitoring devices, which can be worn or implanted, have enabled a more effective healthcare for patients with periodic heart arrhythmia due to their ability to constantly monitor heart activity. However, these devices record considerable amounts of electrocardiogram (ECG) data that needs to be interpreted by physicians. Therefore, there is a growing need to develop reliable methods for automatic ECG interpretation to assist the physicians. Here, we use deep convolutional neural networks (CNN) to classify raw ECG recordings. However, training CNNs for ECG classification often requires a large number of annotated samples, which are expensive to acquire. In this work, we tackle this problem by using transfer learning. First, we pretrain CNNs on the largest public data set of continuous raw ECG signals. Next, we finetune the networks on a small data set for classification of Atrial Fibrillation, which is the most common heart arrhythmia. We show that pretraining improves the performance of CNNs on the target task by up to \$\$6.57{\textbackslash}\%\$\$, effectively reducing the number of annotations required to achieve the same performance as CNNs that are not pretrained. We investigate both supervised as well as unsupervised pretraining approaches, which we believe will increase in relevance, since they do not rely on the expensive ECG annotations. The code is available on GitHub at https://github.com/kweimann/ecg-transfer-learning.},
+  copyright = {2021 The Author(s)},
+  langid = {english},
+  keywords = {Computational biology and bioinformatics,Machine learning},
+  file = {C:\Users\armin\Zotero\storage\VWFQXI2G\Weimann und Conrad - 2021 - Transfer learning for ECG classification.pdf}
 }
 
 @article{wilkinsonComparisonJointSpecies2019,

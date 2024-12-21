@@ -183,18 +183,17 @@ Keywords: convolutional neural network, multimodal neural network, machine learn
 \addcontentsline{toc}{chapter}{Introduction}
 \pagenumbering{arabic}
 \setcounter{page}{1}
-In recent years, deep neural networks have made remarkable breakthroughs across diverse scientific fields (\cite{jordanMachineLearningTrends2015}). In computer vision, models like Mask R-CNN (\cite{heMaskRCNN2017}) have revolutionized object detection in images. In autonomous driving, deep learning has become essential for navigation and decision-making (\cite{bojarskiEndEndLearning2016}). AlphaZero (\cite{silverMasteringChessShogi2017}) demonstrated superhuman levels of play in strategic games such as chess, shogi and go, while AlphaFold (\cite{jumperHighlyAccurateProtein2021}) solved the long-standing challenge of predicting the 3D structure of proteins from their amino acid sequence. In natural language processing, large language models (e.g., GPT-3, \cite{brownLanguageModelsAre2020}) enabled applications like sentiment analysis, text summarization and conversational AI such as ChatGPT (\url{https://chat.openai.com}). This progress in deep learning has been driven by the ever-increasing availability of data and computing resources, as well as advances in learning algorithms and network architectures, such as transformers (\cite{vaswaniAttentionAllYou2017}).
+In recent years, deep neural networks have made remarkable breakthroughs across diverse scientific fields \citep{jordanMachineLearningTrends2015}. In computer vision, models like Mask R-CNN \citep{heMaskRCNN2017} have revolutionized object detection in images. In autonomous driving, deep learning has become essential for navigation and decision-making \citep{bojarskiEndEndLearning2016}. AlphaZero \citep{silverMasteringChessShogi2017} demonstrated superhuman levels of play in strategic games such as chess, shogi and go, while AlphaFold \citep{jumperHighlyAccurateProtein2021} solved the long-standing challenge of predicting the 3D structure of proteins from their amino acid sequence. In natural language processing, large language models \citep[e.g., GPT-3,][]{brownLanguageModelsAre2020} enabled applications like sentiment analysis, text summarization and conversational AI such as ChatGPT (\url{https://chat.openai.com}). This progress in deep learning has been driven by the ever-increasing availability of data and computing resources, as well as advances in learning algorithms and network architectures, such as transformers \citep{vaswaniAttentionAllYou2017}.
 
-Deep learning has also found widespread applications in ecology, advancing tasks such as species distribution modeling, prediction of species interactions, and ecosystem monitoring (\cite{chenEndEndLearningDeep2018}; \cite{wilkinsonComparisonJointSpecies2019};
-\cite{pichlerMachineLearningAlgorithms2020};  \cite{pichlerMachineLearningDeep2023}; \cite{borowiecDeepLearningTool2022}; \cite{tuiaPerspectivesMachineLearning2022}; \cite{christinApplicationsDeepLearning2019}). While traditionally scalar data such as climate variables, soil properties or species traits have been used to address ecological questions, the growing availability of structured data is transforming the field. Modern monitoring technologies, including camera traps, aerial drones, satellites, and acoustic sensors, generate large datasets in the form of images, videos, and audio recordings. Most of the information in these datasets lies in their spatial or temporal structure, making it crucial to use specialized architectures that can capture these patterns effectively. Convolutional neural networks (CNNs, \cite{lecunBackpropagationAppliedHandwritten1989a}), designed to detect and hierarchically combine spatial features, have thus become the most widely used network architecture in ecological applications. They have been applied to tasks such as automatic species recognition, biodiversity monitoring, habitat mapping, land cover classification, and the detection of invasive species (\cite{gomezvillaAutomaticWildAnimal2017}; \cite{norouzzadehAutomaticallyIdentifyingCounting2018}; \cite{tabakMachineLearningClassify2019}; \cite{salamonFusingShallowDeep2017}; \cite{liDeepLearningRemote2018}; \cite{kattenbornConvolutionalNeuralNetworks2019}; \cite{qianUAVDeepConvolutional2020}).
+Deep learning has also found widespread applications in ecology, advancing tasks such as species distribution modeling, prediction of species interactions, and ecosystem monitoring \citep{chenEndEndLearningDeep2018, wilkinsonComparisonJointSpecies2019, pichlerMachineLearningAlgorithms2020, pichlerMachineLearningDeep2023, borowiecDeepLearningTool2022, tuiaPerspectivesMachineLearning2022, christinApplicationsDeepLearning2019}. While traditionally scalar data such as climate variables, soil properties or species traits have been used to address ecological questions, the growing availability of structured data is transforming the field. Modern monitoring technologies, including camera traps, aerial drones, satellites, and acoustic sensors, generate large datasets in the form of images, videos, and audio recordings. Most of the information in these datasets lies in their spatial or temporal structure, making it crucial to use specialized architectures that can capture these patterns effectively. Convolutional neural networks \citep[CNNs,]{lecunBackpropagationAppliedHandwritten1989a}, designed to detect and hierarchically combine spatial features, have thus become the most widely used network architecture in ecological applications. They have been applied to tasks such as automatic species recognition, biodiversity monitoring, habitat mapping, land cover classification, and the detection of invasive species (\citep{gomezvillaAutomaticWildAnimal2017, norouzzadehAutomaticallyIdentifyingCounting2018, tabakMachineLearningClassify2019, salamonFusingShallowDeep2017, liDeepLearningRemote2018, kattenbornConvolutionalNeuralNetworks2019, qianUAVDeepConvolutional2020}.
 
-At the core of CNNs are convolutional layers that apply small, localized filters (also called kernels) that scan across the input to capture patterns such as edges, textures, and shapes. Subsequent convolutional layers then combine these patterns hierarchically, allowing the CNN to capture increasingly complex patterns such as objects and people. CNNs also often use pooling layers (e.g. max-pooling) to downsample the resulting feature maps by combining values in local regions while retaining significant information. This not only makes the network more computationally efficient, but also helps to avoid overfitting problems (\cite{liSurveyConvolutionalNeural2022}).
+At the core of CNNs are convolutional layers that apply small, localized filters (also called kernels) that scan across the input to capture patterns such as edges, textures, and shapes. Subsequent convolutional layers then combine these patterns hierarchically, allowing the CNN to capture increasingly complex patterns such as objects and people. CNNs also often use pooling layers (e.g. max-pooling) to downsample the resulting feature maps by combining values in local regions while retaining significant information. This not only makes the network more computationally efficient, but also helps to avoid overfitting problems \citep{liSurveyConvolutionalNeural2022}.
 
-More recently, even multimodal neural networks (MMNs) have been used in ecology. MMNs combine different neural network architectures to extract and combine features from different data types. For example, an MMN consisting of a dense neural network (DNN) and a CNN can be used to process tabular data (e.g. environmental variables) and image data (e.g. satellite images) at the same time (\cite{zhangNovelMultimodalSpecies2022}; \cite{hu2024introduction}).
+More recently, even multimodal neural networks (MMNs) have been used in ecology. MMNs combine different neural network architectures to extract and combine features from different data types. For example, an MMN consisting of a dense neural network (DNN) and a CNN can be used to process tabular data (e.g. environmental variables) and image data (e.g. satellite images) at the same time \citep{zhangNovelMultimodalSpecies2022, hu2024introduction}.
 
-CNNs and MMNs, like most state-of-the-art networks, are typically built using extensive deep learning frameworks such as \pkg{TensorFlow} (\cite{abadiTensorFlowSystemLargeScale2016}) and \pkg{PyTorch} (\cite{paszkePyTorchImperativeStyle2019}), which offer powerful tools for building and training sophisticated models. However, these frameworks, while highly flexible and efficient, are notoriously difficult to use due to their complexity and steep learning curve. To address this problem, several frontends have been developed with the aim to simplify their usage, including the popular R (\url{www.r-project.org}) frontends \pkg{keras} (\cite{chollet2015keras}) for TensorFlow and \pkg{luz} (\cite{falbelLuzHigherLevel2024}) for PyTorch. Despite these efforts, these frontends remain challenging to use, especially for ecologists that are accustomed to the intuitive and user-friendly design of other R packages used for statistical analysis. For instance, packages such as \pkg{ranger} and \pkg{lme4} allow traditional machine learning models like random forest and statistical models like mixed-effect models to be fitted in a single line of code.
+CNNs and MMNs, like most state-of-the-art networks, are typically built using extensive deep learning frameworks such as \pkg{TensorFlow} \citep{abadiTensorFlowSystemLargeScale2016} and \pkg{PyTorch} \citep{paszkePyTorchImperativeStyle2019}, which offer powerful tools for building and training sophisticated models. However, these frameworks, while highly flexible and efficient, are notoriously difficult to use due to their complexity and steep learning curve. To address this problem, several frontends have been developed with the aim to simplify their usage, including the popular R (\url{www.r-project.org}) frontends \pkg{keras} \citep{chollet2015keras} for TensorFlow and \pkg{luz} \citep{falbelLuzHigherLevel2024} for PyTorch. Despite these efforts, these frontends remain challenging to use, especially for ecologists that are accustomed to the intuitive and user-friendly design of other R packages used for statistical analysis. For instance, packages such as \pkg{ranger} and \pkg{lme4} allow traditional machine learning models like random forest and statistical models like mixed-effect models to be fitted in a single line of code.
 
-Several R packages have been developed with the goal to imitate this user-friendly design for deep learning. Of these packages, \pkg{cito} (\cite{amesoderCitoPackageTraining2024}) stands out in particular. Not only does it provide a user-friendly interface to build and train deep neural networks in a single line of code, it also provides many important functionalities ranging from regularization techniques that control the bias-variance trade-off (e.g., elastic net regularization, dropout) to modern training techniques that help with convergence (e.g., early stopping, learning rate scheduler). \pkg{cito} uses \pkg{torch} (\cite{falbelTorchTensorsNeural2024}), a native implementation of the PyTorch framework in R, as backend, taking full advantage of its numerically optimized functions and the integrated support of graphic processing units (GPUs), which is crucial for the efficient training of large neural networks.
+Several R packages have been developed with the goal to imitate this user-friendly design for deep learning. Of these packages, \pkg{cito} \citep{amesoderCitoPackageTraining2024} stands out in particular. Not only does it provide a user-friendly interface to build and train deep neural networks in a single line of code, it also provides many important functionalities ranging from regularization techniques that control the bias-variance trade-off (e.g., elastic net regularization, dropout) to modern training techniques that help with convergence (e.g., early stopping, learning rate scheduler). \pkg{cito} uses \pkg{torch} \citep{falbelTorchTensorsNeural2024}, a native implementation of the PyTorch framework in R, as backend, taking full advantage of its numerically optimized functions and the integrated support of graphic processing units (GPUs), which is crucial for the efficient training of large neural networks.
 
 However, the current version of \pkg{cito} only supports dense neural networks (DNNs), an architecture in which every input neuron is connected to every neuron in subsequent layers. By design, DNNs are invariant to the positional arrangement of input features, which makes them work best on unstructured, tabular data, but also unsuitable for spatially structured data, such as images, where the relationships between neighboring pixels contain crucial information. As a result, \pkg{cito} is unable to address the ecological tasks that arose with the trend of spatially structured data.
 
@@ -337,17 +336,98 @@ The tests for the MMN architecture are mostly the same, with the main difference
 
 \section*{Package availability}
 \addcontentsline{toc}{section}{Package availability}
+The current version of \pkg{cito} (1.1) can be downloaded from the comprehensive R archive network (CRAN). My implementations of CNNs and MMNs are added in version 1.1.1, which can be found on GitHub (\url{https://github.com/citoverse/cito}) and are planned to be included in the next CRAN release.
+
 \chapter*{Case study}
 \addcontentsline{toc}{chapter}{Case study}
-\section*{Data (and Code)}
-\addcontentsline{toc}{section}{Data}
-\section*{Architecture}
-\addcontentsline{toc}{section}{Architecture}
-\section*{Training and testing}
-\addcontentsline{toc}{section}{Training and testing}
+\newsavebox{\cnn} % Create a savebox to store the listing
+\begin{lrbox}{\cnn}
+	\begin{lstlisting}[literate={~}{{$\sim$}}1]
+mobilenet <- create_architecture(transfer("mobilenet_v2", freeze = FALSE))
 
-\chapter*{Conclusion}
-\addcontentsline{toc}{chapter}{Conclusion}
+cnn(X = spectra,
+    Y = tabular_data[["species"]],
+    architecture = mobilenet,
+    loss = "softmax",
+    validation = 0.1,
+    early_stopping = 3,
+    device = "cuda",
+    batchsize = 16) -> cnn.fit
+		
+mmn(formula = tabular_data[["species"]] ~ 
+              cnn(X = spectra, architecture = mobilenet) +
+              dnn(formula = ~ longitude + latitude, data = tabular_data),
+    loss = "softmax",
+    validation = 0.1,
+    early_stopping = 3,
+    device = "cuda",
+    batchsize = 16) -> mmn.fit
+	\end{lstlisting}
+\end{lrbox}
+
+\newsavebox{\dnn} % Create a savebox to store the listing
+\begin{lrbox}{\dnn}
+	\begin{minipage}{\wd\cnn}
+		\begin{lstlisting}[literate={~}{{$\sim$}}1]
+dnn(formula = species ~ longitude + latitude,                             
+    data = tabular_data,
+    loss = "softmax",
+    validation = 0.1,
+    early_stopping = 3,
+    device = "cuda",
+    batchsize = 16) -> dnn.fit
+		\end{lstlisting}
+	\end{minipage}
+\end{lrbox}
+
+After discussing the implementation of CNNs and MMNs in \pkg{cito}, I now want to demonstrate the workflow of using \pkg{cito} for an ecological application that requires these architectures. The example I have chosen is the prediction of bird species based on audio recordings. When processing audio recordings, models are often trained on extracted features rather than raw audio signals. A common approach is to transform the audio signals into frequency-time spectrograms, which are spatially structured in the frequency and time dimensions, making them a good application for CNNs.
+The data I used for this case study came from the BirdCLEF 2024 Kaggle competition \citep{birdclef-2024}. This dataset consists of over 20,000 audio recordings of bird calls from the \url{xeno-canto.org} website. From each recording, I sampled a random 10 second chunk and transformed them into mel spectrograms using the R package "torchaudio" \citep{keydanaTorchaudioInterfacePytorchs2023}. Mel spectrograms are frequency-time spectrograms in which the frequency values are transformed to the Mel scale, which more accurately represents how humans perceive sound (humans can detect frequency differences better at lower frequencies). I took the hyperparameters used for this transformation (e.g. n\_fft, n\_mels) from the winning solution of the Kaggle competition. After the transformation, I normalized each spectrum to have values between 0 and 1. In addition to the audio recordings, the dataset also provides the longitude and latitude values of the location where they were recorded. After discarding audio recordings with bad ratings or missing longitude/latitude values, I ended up with 21166 samples for 177 different bird species.
+
+I used this data to train the three model architectures that \pkg{cito} now supports: Fully connected neural networks were trained on the longitude and latitude values, convolutional neural networks were trained on the mel spectrograms, and multimodal neural networks were trained on both the longitude/latitude values and the mel spectrograms. Since the 177 classes are highly unbalanced (class sizes range from 5 to 466), I divided my data into 5 folds, preserving the class distributions in each fold, which are used in a cross-validation to evaluate the performance of the model architectures. In total, I trained 15 models (5 DNNs, 5 CNNs and 5 MMNs).
+
+In this case study, I pretended to be a user with little to no prior knowledge of deep learning and network architectures. Therefore, I mostly used the default values for the hyperparameters:
+
+\begin{figure}[h]
+	\centering
+	\resizebox{\textwidth}{!}{\usebox{\dnn}}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\resizebox{\textwidth}{!}{\usebox{\cnn}}
+\end{figure}
+
+To demonstrate the transfer learning option, I used the MobileNet V2 \citep{sandlerMobileNetV2InvertedResiduals2019} architecture with pre-trained weights for the CNNs (and the CNN part of the MMNs). I set device = "cuda" to enable training on GPUs and changed the batchsize to 16, because the GPUs I used did not have enough memory to support the default batchsize of 32. I also set validation=0.1 and early\_stopping=3. This causes the models to use 10\% of the provided training data as a validation set and to stop training early if the loss on this validation set has not improved over the last 3 epochs, which not only reduces the training time of these models but also prevents them from overfitting.
+
+After training the models
+
+
+
+
+\chapter*{Discussion and conclusion}
+\addcontentsline{toc}{chapter}{Discussion and conclusion}
+In this work, I introduced the implementations of CNN and MMN architectures in the R package \pkg{cito}. Building and training CNNs consisting of convolutional, pooling and linear layers previously required users to have extensive knowledge of complex deep learning frameworks such as PyTorch or TensorFlow. The simple interface I provide, makes this not necessary anymore. Because of the \pkg{torch} backend and its provided GPU support, \pkg{cito} can train these large networks as efficiently as the complex frameworks. Moreover, I provide the option of utilizing transfer learning by integrating several pre-trained models. To address the current trend of multimodal models, I implemented an MMN architecture that can combine the two neural network architectures currently available in \pkg{cito} (DNN and CNN). With the example of bird species classification, I showcased how little code is necessary when using \pkg{cito} to train good performing, CNN-based classifiers.
+
+The CNN architecture performed best in my case study (macro-averaged AUC: 0.967, accuracy: 0.673). However, these results can not be compared to the results of the Kaggle competition, because I evaluated my models on the training set via cross-validation, whereas the models of the Kaggle competition have been evaluated on a separate test set, which has significant differences to the training set: 1) Unlike the training set, which contains sound recordings from all over the globe, the sound recordings of the test set only contains sound recordings from the western ghats of india. This local blocking of the test set might reduce the models performance, since the model trained on the global data might have overfitted to global patterns such as background noises or to local dialects of the bird calls, that are not present in the local region of the test set. 2) The sound recordings of the test set have a fixed length of 4 minutes, whereas the median length of sound recordings in the training set is only 22.7 seconds. A large portion of the training recordings are shorter or only a bit longer than 10 seconds, so you can expect that the randomly sampled 10 seconds chunk contains at least parts of the bird call, that can be used for prediction. The probability that a random 10 seconds chunk of the 4 minute long audio recordings of the test set contains parts of the bird call, instead of only noise, is lower. A way to address this problem is to divide the audio recordings into 10 seconds chunks and then average the predictions of these chunks. Since there might be chunks with no or only little parts of the bird call and mostly background noise, this can increase the uncertainty of the final predictions, which reduces the overall performance measured by AUC. 3) The test set only includes the audio files, not the longitude and latitude values. This makes it impossible to evaluate the DNNs and MMNs I trained on the test set, since they need them to make predictions.
+
+The DNN and MMN architectures (Macro-averaged AUC: , respectively) performed worse than the CNN. For the DNN this was expected, since it only predicts on longitude and latitude values, which obviously aren't enough for a complex task such as species classification, because several different bird species can occur at the same location. However, I expected that the MMN which uses both the audio recordings and the coordinates might be better in detecting local dialects of the bird calls and, thus, achieve better results than the CNN. 
+
+% Case study results:
+%	- DNN und MMN vielleicht schlechter weil keine vortrainierten gewichte
+%	- insbesondere da kein tuning (hyperparameter, architecture)
+
+% mlr3torch
+% - fuer machine learner, meins fuer oekologen
+% - trochvision pretrained models verfuegbar
+% - kein einfaches interface fuer custom CNNs
+
+% Limitations of 'cito' and future work
+%	- Transfer learning for 1D and 3D convolutions
+% 	- XAI
+% 	- Transposed convolutional layer ?
+%	- other architectures: RNNs
+
+% Conclusion:
+%	- CNNs more accessible to researchers/ecologists
 
 \chapter*{Acknowledgments}
 \addcontentsline{toc}{chapter}{Acknowledgments}
@@ -359,8 +439,6 @@ The tests for the MMN architecture are mostly the same, with the main difference
 \bibliographystyle{chicago} 
 \bibliography{../literature/literature} % Reference the BibTeX library file
 
-\chapter*{Code and data availability statement}
-A stable version of the \pkg{cito} package can be downloaded from CRAN. The development branch can be found on GitHub: \url{https://github.com/citoverse/cito}. Documentation and the rendered vignettes can be found on the CRAN website of the package \url{ https://cran.r-project.org/web/packages/cito/index.html}. The dataset processed in the case study is available from the BirdCLEF 2024 kaggle competition (\cite{birdclef-2024}). The code to replicate the case study can be found on GitHub: \url{https://github.com/ArminSchenk/BirdSongRecognition}.
 \chapter*{Declaration of independence}
 \addcontentsline{toc}{chapter}{Declaration of independence}
 Ich habe die Arbeit selbstständig verfasst, keine anderen als die angegebenen Quellen und Hilfsmittel benutzt und bisher keiner anderen Prüfungsbehörde vorgelegt. Außerdem bestätige ich hiermit, dass die vorgelegten Druckexemplare und die vorgelegte elektronische Version der Arbeit identisch sind, dass ich über wissenschaftlich korrektes Arbeiten und Zitieren aufgeklärt wurde und dass ich von den in §26 Abs. 5 vorgesehenen Rechtsfolgen Kenntnis habe.
