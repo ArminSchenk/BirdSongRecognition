@@ -25,12 +25,11 @@ for (i in 1:5) {
                  epochs = 100,
                  early_stopping = 3,
                  device = "cuda",
-                 batchsize = 16)
+                 batchsize = 16,
+                 plot = FALSE)
   
   cnn.fit$data <- list(ylvls=levels(metadata[,"primary_label"]))
   
-  gc()
-  torch::cuda_empty_cache()
   gc()
   torch::cuda_empty_cache()
   
@@ -40,8 +39,6 @@ for (i in 1:5) {
   saveRDS(cnn.fit, file = paste0("analysis/results/models/CNN_fold", i, ".rds"))
   
   rm(cnn.fit)
-  gc()
-  torch::cuda_empty_cache()
   gc()
   torch::cuda_empty_cache()
 }

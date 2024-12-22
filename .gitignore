@@ -3,6 +3,8 @@
 .RData
 .Ruserdata
 
+analysis/results/models
+analysis/results/predictions
 data/
 paper/thesis.aux
 paper/thesis.bbl

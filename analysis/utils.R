@@ -21,3 +21,15 @@ stratified_kfold <- function(data, target_col, k = 5) {
   
   return(folds)
 }
+
+# One vs All AUCs for all classes
+get_auc <- function(pred, metadata) {
+  pred <- do.call(rbind, pred)
+  true <- metadata[rownames(pred), "primary_label"]
+  auc <- numeric(length(levels(metadata[,"primary_label"])))
+  names(auc) <- levels(metadata[,"primary_label"])
+  for(class in names(auc)) {
+    auc[class] <- auc(roc(as.numeric(true==class), pred[,class]))
+  }
+  return(auc)
+}

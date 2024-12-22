@@ -26,12 +26,11 @@ for (i in 1:5) {
                  epochs = 100,
                  early_stopping = 3,
                  device = "cuda",
-                 batchsize = 16)
+                 batchsize = 8,
+                 plot = FALSE)
   
   mmn.fit$data <- list(ylvls=levels(metadata[,"primary_label"]))
   
-  gc()
-  torch::cuda_empty_cache()
   gc()
   torch::cuda_empty_cache()
   
@@ -41,8 +40,6 @@ for (i in 1:5) {
   saveRDS(mmn.fit, file = paste0("analysis/results/models/MMN_fold", i, ".rds"))
   
   rm(mmn.fit)
-  gc()
-  torch::cuda_empty_cache()
   gc()
   torch::cuda_empty_cache()
 }

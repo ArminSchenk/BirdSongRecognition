@@ -23,12 +23,11 @@ for (i in 1:5) {
                  epochs = 100,
                  early_stopping = 3,
                  device = "cuda",
-                 batchsize = 16)
+                 batchsize = 16,
+                 plot = FALSE)
   
   dnn.fit$data <- list(ylvls=levels(metadata[,"primary_label"]))
   
-  gc()
-  torch::cuda_empty_cache()
   gc()
   torch::cuda_empty_cache()
   
@@ -38,8 +37,6 @@ for (i in 1:5) {
   saveRDS(dnn.fit, file = paste0("analysis/results/models/DNN_fold", i, ".rds"))
   
   rm(dnn.fit)
-  gc()
-  torch::cuda_empty_cache()
   gc()
   torch::cuda_empty_cache()
 }
