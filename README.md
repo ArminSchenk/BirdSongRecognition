@@ -6,15 +6,15 @@ The data was taken from [BirdCLEF 2024](https://www.kaggle.com/competitions/bird
 ```
 ├──data
 |    ├── birdclef2024
-|        ├── test_soundscapes
-|            └── ...
-|        ├── train_audio
-|            └── ...
-|        ├── unlabeled_soundscapes
-|            └── ...
-|        ├── eBird_Taxonomy_v2021.csv
-|        ├── sample_submission.csv
-|        └── train_metadata.csv
+|    |    ├── test_soundscapes
+|    |    |    └── ...
+|    |    ├── train_audio
+|    |    |    └── ...
+|    |    ├── unlabeled_soundscapes
+|    |    |    └── ...
+|    |    ├── eBird_Taxonomy_v2021.csv
+|    |    ├── sample_submission.csv
+|    |    └── train_metadata.csv
 ```
 # Analysis
 Run the scripts in the designated order. 
