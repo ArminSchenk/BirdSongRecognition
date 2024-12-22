@@ -5,6 +5,7 @@
 
 \usepackage[a4paper,inner=1.5in,outer=1in,top=1in,bottom=1in]{geometry}
 
+\usepackage{ipsum}
 
 \usepackage{chngcntr} % Allows customization of counters
 \counterwithout{figure}{chapter} % Make figure numbers independent of chapters
@@ -23,8 +24,17 @@
 
 
 % adjust caption properties
-\usepackage[margin=10pt, font=small, labelfont=bf]{caption} 
-\captionsetup{justification=justified, singlelinecheck=false}
+\usepackage{caption} 
+\captionsetup[table]{position=top,justification=justified,singlelinecheck=false,format=plain}
+\captionsetup[figure]{position=below,justification=justified,singlelinecheck=false,format=plain}
+
+\captionsetup{
+	labelfont=bf,         % Bold label (e.g., Table 2:)
+	textfont=normalfont,  % Normal font for the text
+	labelsep=colon,       % Colon after "Table X" or "Figure X"
+	indention=0pt         % No indentation on the second and following lines
+}
+
 
 
 % hyperrefs on, with nicer colors
@@ -168,16 +178,31 @@ Eingereicht am: & \today\\
 % Restore original margins
 \restoregeometry 
 \end{titlepage}
+
 \thispagestyle{empty}
 \vspace*{\fill} % Push content to the bottom of the page
 \mbox{} % Add an invisible box (to ensure the page is recognized as non-empty)
 \selectlanguage{english}
-\tableofcontents
 
 \chapter*{Abstract}
-\noindent In recent years, there has been a growing interest in convolutional neural networks (CNNs) in the field of ecology. Typically, extensive deep learning frameworks, such as PyTorch or Tensorflow, are used to build and train these models. However, using these frameworks requires considerable expertise and time. Here, I present an extension to the R package \pkg{cito} that allows novice users to build and train CNNs with minimal code. The \pkg{cito} package is based on the numerically optimized \pkg{torch} backend, which also allows training of CNNs on graphics processing units (GPUs). In addition, several CNNs pre-trained on the large ImageNet dataset can be used in \pkg{cito} for transfer learning. Moreover, I implemented a function that combines several dense neural networks (DNNs) and CNNs into a multimodal neural network (MMN). This allows a single network to be trained on and process several different types of data. To showcase the new features of \pkg{cito}, I built several models to predict the species of birds based on their songs. My hope is that by providing a user-friendly pipeline for the construction and training of CNNs and MMNs, these model architectures will become more accessible to researchers in the field of ecology.
+\noindent In recent years, there has been a growing interest in convolutional neural networks (CNNs) in the field of ecology. Typically, extensive deep learning frameworks, such as PyTorch or Tensorflow, are used to build and train these models. However, using these frameworks requires considerable expertise and time. Here, I present an extension to the R package \pkg{cito} that allows novice users to build and train CNNs with minimal code. The \pkg{cito} package is based on the numerically optimized \pkg{torch} backend, which allows efficient training of CNNs on graphics processing units (GPUs). In addition, several CNNs pre-trained on the large ImageNet dataset are available in \pkg{cito} for transfer learning. Moreover, I implemented a function that combines fully-connected neural networks and CNNs into a multimodal neural network (MMN). This allows a single network to be trained on and process several different types of data. I demonstrate the new features of \pkg{cito} with the example of bird species classification based on bird calls. My hope is that by providing a user-friendly pipeline for building and training CNNs and MMNs, these complex model architectures will become more accessible to researchers in the field of ecology.
 \newline\newline
 Keywords: convolutional neural network, multimodal neural network, machine learning, deep learning, transfer learning, R language, classification, regression
+\vspace{3cm}
+\section*{Acknowledgments}
+I would like to thank Prof. Dr. Florian Hartig for supervising my thesis and always taking the time to discuss my work and provide feedback. Special thanks also to Dr. Maximilian Pichler for all his help and feedback, especially regarding the design choices of \pkg{cito}. I would also like to thank my friend Christian for all his encouragement throughout my studies.
+
+\newpage
+\thispagestyle{empty}
+\vspace*{\fill} % Push content to the bottom of the page
+\mbox{} % Add an invisible box (to ensure the page is recognized as non-empty)
+
+\tableofcontents
+
+\newpage
+\thispagestyle{empty}
+\vspace*{\fill} % Push content to the bottom of the page
+\mbox{} % Add an invisible box (to ensure the page is recognized as non-empty)
 
 \chapter*{Introduction}
 \addcontentsline{toc}{chapter}{Introduction}
@@ -233,7 +258,8 @@ create_architecture <- function(...,
 
 The core structure of a CNN consists of a combination of convolutional and pooling layers, followed by one or more linear layers. These layers can be specified using the provided layer functions \fn{conv}, \fn{avgPool}, \fn{maxPool} and \fn{linear}, and then passed to the \fn{create\_architecture} function, which combines them into a complete architecture. Each of these functions has several arguments (see Table \ref{layers}) that affect the corresponding layer, but can also be used without specifying any of them. In this case, the unspecified arguments are filled with the default values set within the \fn{create\_architecture} function. For example, a linear layer created with \fn[\val{n\_neurons=128}]{linear} will have its unspecified arguments \val{bias}, \val{activation}, \val{normalization} and \val{dropout} set to \val{TRUE}, \val{"relu"}, \val{FALSE} and \val{0.0} respectively. These defaults can be overridden in the \fn{create\_architecture} function. For example, if you want to introduce a dropout rate of \val{0.5} for all linear layers that don't specify the dropout rate themselves, you can set \val{default\_dropout = }\fn[\val{linear=0.5}]{list}. Note that this only changes the default value for linear layers, leaving the default dropout rate for convolutional layers at \val{0.0}. If you don't want this, you can either also set a different default for convolutional layers (e.g. \val{default\_dropout = }\fn[\val{linear=0.5, conv=0.3}]{list}) or set the default dropout rate for both linear and convolutional layers to the same value with \val{default\_dropout = 0.5}. This implementation of the \fn{create\_architecture} function allows a high degree of flexibility and customization, while still allowing users who don't need it to specify CNN architectures in a single line of code (see section \pkg{Case study}).
 
-\begin{table}[h!]
+\begin{table}[t]
+	\caption{Functions that specify the layers for the \fn{create\_architecture} function. The arguments configure the architecture of the corresponding layer and the defaults are set to commonly used values. However, the architecture of the network and each layer is usually tuned for better performance. In particular, the n\_kernels argument shouldn't be the same for all convolutional layers of the network. It's common practice to increase n\_kernels the deeper the convolutional layer is in the network. Additionally, the linear and convolutional layers include the normalization and dropout parameters, which are used to add batch normalization and dropout regularization to the corresponding layer.}
 	\centering
 	%\renewcommand{\arraystretch}{1.3}
 	\resizebox{\textwidth}{!}{
@@ -265,7 +291,7 @@ The core structure of a CNN consists of a combination of convolutional and pooli
 			& dropout       & Dropout probability of neurons                                          & 0         \\ \hline
 		\end{tabular}
 	}
-	\caption{Functions that specify the layers for the \fn{create\_architecture} function. The arguments configure the architecture of the corresponding layer and the defaults are set to commonly used values. However, the architecture of the network and each layer is usually tuned for better performance. In particular, the n\_kernels argument shouldn't be the same for all convolutional layers of the network. It's common practice to increase n\_kernels the deeper the convolutional layer is in the network. Additionally, the linear and convolutional layers include the normalization and dropout parameters, which are used to add batch normalization and dropout regularization to the corresponding layer.}
+
 	\label{layers}
 \end{table}
 
@@ -274,6 +300,7 @@ For the defaults, I have chosen values that are commonly used and make sense as 
 To help the user understand the architecture created by the \fn{create\_architecture} function, I implemented \fn{print} and \fn{plot} functions for the resulting R object. These visualize the configuration of each layer in detail, including how the size of the input changes after each layer (Figure \ref{plot}).
 
 \begin{table}[t]
+	\caption{Arguments of the \fn{cnn} function that control the learning process of the network. The defaults are set to reasonable values, but hyperparameters (e.g. learning rate, batchsize, lambda and alpha) usually need to be tuned to avoid convergence problems and improve performance. Detailed guidance on this can be found in the \pkg{cito} R package \fn["Training neural networks"]{vignette}.}
 	\centering
 	%\renewcommand{\arraystretch}{1.1}
 	\resizebox{\textwidth}{!}{
@@ -296,7 +323,7 @@ To help the user understand the architecture created by the \fn{create\_architec
 			\hline
 		\end{tabular}
 	}
-	\caption{Arguments of the \fn{cnn} function that control the learning process of the network. The defaults are set to reasonable values, but hyperparameters (e.g. learning rate, batchsize, lambda and alpha) usually need to be tuned to avoid convergence problems and improve performance. Detailed guidance on this can be found in the \pkg{cito} R package \fn["Training neural networks"]{vignette}.}
+	
 	\label{parameters}
 \end{table}
 
@@ -312,6 +339,13 @@ The R package \pkg{torchvision} provides several models pre-trained on the Image
 
 \section*{Multimodal neural networks}
 \addcontentsline{toc}{section}{Multimodal neural networks}
+
+\begin{figure}
+	\includegraphics[width=\textwidth]{MMN.pdf}
+	\label{MMN}
+	\caption{Example of a multimodal neural network that combines a CNN and a DNN to process RGB images and tabular data in the same network. A network like this can be created by $mmn(Y \sim cnn(...) + dnn(...), ...)$. The \fn{mmn} function can combine any number of CNNs and DNNs.}
+\end{figure}
+
 Multimodal neural networks are designed to process data in different formats (e.g. image, tabular, sound) simultaneously. To do this, an appropriate architecture is built for each input format (e.g. CNN for image data, DNN for tabular data). The concatenated output embeddings of each of these architectures serve as input to a linear classifier that combines the different architectures. This allows the network to be trained on all data simultaneously, and to learn interactions between different data types.
 
 MMNs are implemented in \pkg{cito} with the \fn{mmn} function, which allows the creation of MMNs combining any number of CNNs and DNNs. This can be specified by the user with a formula. For example, to create an MMN that consists of one CNN and one DNN:
@@ -381,33 +415,42 @@ dnn(formula = species ~ longitude + latitude,
 \end{lrbox}
 
 After discussing the implementation of CNNs and MMNs in \pkg{cito}, I now want to demonstrate the workflow of using \pkg{cito} for an ecological application that requires these architectures. The example I have chosen is the prediction of bird species based on audio recordings. When processing audio recordings, models are often trained on extracted features rather than raw audio signals. A common approach is to transform the audio signals into frequency-time spectrograms, which are spatially structured in the frequency and time dimensions, making them a good application for CNNs.
-The data I used for this case study came from the BirdCLEF 2024 Kaggle competition \citep{birdclef-2024}. This dataset consists of over 20,000 audio recordings of bird calls from the \url{xeno-canto.org} website. From each recording, I sampled a random 10 second chunk and transformed them into mel spectrograms using the R package "torchaudio" \citep{keydanaTorchaudioInterfacePytorchs2023}. Mel spectrograms are frequency-time spectrograms in which the frequency values are transformed to the Mel scale, which more accurately represents how humans perceive sound (humans can detect frequency differences better at lower frequencies). I took the hyperparameters used for this transformation (e.g. n\_fft, n\_mels) from the winning solution of the Kaggle competition. After the transformation, I normalized each spectrum to have values between 0 and 1. In addition to the audio recordings, the dataset also provides the longitude and latitude values of the location where they were recorded. After discarding audio recordings with bad ratings or missing longitude/latitude values, I ended up with 21166 samples for 177 different bird species.
+The data I used for this case study came from the BirdCLEF 2024 Kaggle competition \citep{birdclef-2024}. This dataset consists of over 20,000 audio recordings of bird calls from the \url{xeno-canto.org} website. From each recording, I sampled a random 10 second chunk and transformed them into Mel spectrograms using the R package "torchaudio" \citep{keydanaTorchaudioInterfacePytorchs2023}. Mel spectrograms are frequency-time spectrograms in which the frequency values are transformed to the Mel scale, which more accurately represents how humans perceive sound, as humans can detect frequency differences better at lower frequencies \citep{stevensScaleMeasurementPsychological1937}. I took the hyperparameters used for this transformation (e.g. n\_fft, n\_mels) from the winning solution of the Kaggle competition. After the transformation, I min-max normalized each spectrum to have values between 0 and 1. In addition to the audio recordings, the dataset also provides the coordinates of the location where they were recorded. After discarding audio recordings with bad ratings or missing longitude/latitude values, I ended up with 21166 samples for 177 different bird species.
 
-I used this data to train the three model architectures that \pkg{cito} now supports: Fully connected neural networks were trained on the longitude and latitude values, convolutional neural networks were trained on the mel spectrograms, and multimodal neural networks were trained on both the longitude/latitude values and the mel spectrograms. Since the 177 classes are highly unbalanced (class sizes range from 5 to 466), I divided my data into 5 folds, preserving the class distributions in each fold, which are used in a cross-validation to evaluate the performance of the model architectures. In total, I trained 15 models (5 DNNs, 5 CNNs and 5 MMNs).
+I used this data to train the three model architectures that \pkg{cito} now supports: Fully connected neural networks were trained on the coordinates, convolutional neural networks were trained on the Mel spectrograms, and multimodal neural networks were trained on both the coordinates and the Mel spectrograms. Since the 177 classes are highly unbalanced (class sizes range from 5 to 466), I divided my data into 5 folds, preserving the class distributions in each fold, which are used in a cross-validation to evaluate the performance of the model architectures. In total, I trained 15 models (5 DNNs, 5 CNNs and 5 MMNs).
 
-In this case study, I pretended to be a user with little to no prior knowledge of deep learning and network architectures. Therefore, I mostly used the default values for the hyperparameters:
+In this case study, I primarily used the default values of the hyperparameters to simulate the case of an inexperienced user who wants to train deep neural networks in a single line of code without spending a lot of time tuning the hyperparameters.:
 
 \begin{figure}[h]
 	\centering
 	\resizebox{\textwidth}{!}{\usebox{\dnn}}
 \end{figure}
-\begin{figure}[h]
-	\centering
+
+\begin{figure}[h!]
+	\includegraphics[width=\textwidth]{../analysis/results/figures/auc_beehive.pdf}
+	\caption{Performance comparison of the three architectures implemented in \pkg{cito} (DNN, CNN, MMN) for bird species classification. DNNs were trained on the coordinates of the location of the audio recordings, CNNs were trained on the Mel spectrograms of the audio recordings, and MMNs were trained on both. Each architecture was trained 5 times in a 5-fold stratified cross-validation. For each of the 5 trained models, predictions were made for the 4 training folds, and the omitted validation fold. The predictions of the 5 models were combined to calculate two one-vs-all AUC values for each of the 177 bird species; one for the training and one for the validation predictions. These AUC values are shown, color coded according to the number of samples in the dataset belonging to the species.}
+	\label{beehive}
+	\vspace{1cm}
 	\resizebox{\textwidth}{!}{\usebox{\cnn}}
+	\newpage
 \end{figure}
 
-To demonstrate the transfer learning option, I used the MobileNet V2 \citep{sandlerMobileNetV2InvertedResiduals2019} architecture with pre-trained weights for the CNNs (and the CNN part of the MMNs). I set device = "cuda" to enable training on GPUs and changed the batchsize to 16, because the GPUs I used did not have enough memory to support the default batchsize of 32. I also set validation=0.1 and early\_stopping=3. This causes the models to use 10\% of the provided training data as a validation set and to stop training early if the loss on this validation set has not improved over the last 3 epochs, which not only reduces the training time of these models but also prevents them from overfitting.
+%\begin{figure}[h]
+%	\centering
+%	\resizebox{\textwidth}{!}{\usebox{\cnn}}
+%\end{figure}
 
-After training the models
 
+To demonstrate the transfer learning option, I used the MobileNet V2 \citep{sandlerMobileNetV2InvertedResiduals2019} architecture with pre-trained weights for the CNNs (and the CNN part of the MMNs). I set device = "cuda" to enable training on GPUs and changed the batchsize to 16, as the GPUs I used did not have enough memory to support the default batchsize of 32. I also set validation=0.1 and early\_stopping=3. This causes the models to use 10\% of the provided training data as a validation set and to stop training early if the loss on that validation set has not improved over the last 3 epochs, which not only reduces the training time of these models but also helps to reduce overfitting.
 
+When comparing the performance of the architectures (Figure \ref{beehive}), I found that the CNN architecture performed better than the DNN and MMN.
 
 
 \chapter*{Discussion and conclusion}
 \addcontentsline{toc}{chapter}{Discussion and conclusion}
-In this work, I introduced the implementations of CNN and MMN architectures in the R package \pkg{cito}. Building and training CNNs consisting of convolutional, pooling and linear layers previously required users to have extensive knowledge of complex deep learning frameworks such as PyTorch or TensorFlow. The simple interface I provide, makes this not necessary anymore. Because of the \pkg{torch} backend and its provided GPU support, \pkg{cito} can train these large networks as efficiently as the complex frameworks. Moreover, I provide the option of utilizing transfer learning by integrating several pre-trained models. To address the current trend of multimodal models, I implemented an MMN architecture that can combine the two neural network architectures currently available in \pkg{cito} (DNN and CNN). With the example of bird species classification, I showcased how little code is necessary when using \pkg{cito} to train good performing, CNN-based classifiers.
+In this work, I presented the implementation of CNN and MMN architectures in the R package \pkg{cito}. Building and training CNNs previously required users to have extensive knowledge of complex deep learning frameworks such as PyTorch or TensorFlow. With the simple interface I provide, this is no longer necessary. Because of the \pkg{torch} backend and the GPU support it provides, \pkg{cito} can train these large networks as efficiently as the complex frameworks. I also provide the ability to use transfer learning by integrating several pre-trained models. To address the current trend towards multimodal models, I have implemented an MMN architecture that can combine the two neural network architectures currently available in \pkg{cito} (DNN and CNN). Using bird species classification as an example, I demonstrated how little code is required when using \pkg{cito} to train good performing CNN-based classifiers.
 
-The CNN architecture performed best in my case study (macro-averaged AUC: 0.967, accuracy: 0.673). However, these results can not be compared to the results of the Kaggle competition, because I evaluated my models on the training set via cross-validation, whereas the models of the Kaggle competition have been evaluated on a separate test set, which has significant differences to the training set: 1) Unlike the training set, which contains sound recordings from all over the globe, the sound recordings of the test set only contains sound recordings from the western ghats of india. This local blocking of the test set might reduce the models performance, since the model trained on the global data might have overfitted to global patterns such as background noises or to local dialects of the bird calls, that are not present in the local region of the test set. 2) The sound recordings of the test set have a fixed length of 4 minutes, whereas the median length of sound recordings in the training set is only 22.7 seconds. A large portion of the training recordings are shorter or only a bit longer than 10 seconds, so you can expect that the randomly sampled 10 seconds chunk contains at least parts of the bird call, that can be used for prediction. The probability that a random 10 seconds chunk of the 4 minute long audio recordings of the test set contains parts of the bird call, instead of only noise, is lower. A way to address this problem is to divide the audio recordings into 10 seconds chunks and then average the predictions of these chunks. Since there might be chunks with no or only little parts of the bird call and mostly background noise, this can increase the uncertainty of the final predictions, which reduces the overall performance measured by AUC. 3) The test set only includes the audio files, not the longitude and latitude values. This makes it impossible to evaluate the DNNs and MMNs I trained on the test set, since they need them to make predictions.
+In my case study, the CNN achieved a high macro-average AUC of 0.967 on the validation sets of the 5-fold cross-validation. However, these results cannot be compared to the results of the Kaggle competition, as the models of the were evaluated on a separate test set, which has significant differences from the training set I performed my cross-validation on: 1) The test set contains only the audio files, not the coordinates. This makes it impossible to evaluate the DNNs and MMNs I trained on the test set, as they need these to make predictions. 2) Unlike the training set, which contains sound recordings from all over the world, the test set only contains sound recordings from the Western Ghats of India. This local blocking of the test set could reduce model performance, as a model trained on the global data could overfit to global patterns, such as background noise or local dialects of bird calls, that are not present in the local region of the test set. 3) The sound recordings in the test set have a fixed length of 4 minutes, whereas the median length of the sound recordings in the training set is only 22.7 seconds. A large proportion of the training recordings are shorter or only slightly longer than 10 seconds, so it can be expected that the randomly sampled 10-second chunk will contain at least parts of the bird call that can be used for prediction. The probability that a random 10-second chunk of the 4-minute audio recordings in the test set will contain parts of the bird call, rather than just noise, is lower. The winning team in the Kaggle competition dealt with this problem by dividing the audio recordings into 10-second chunks and then averaging the predictions of these chunks. As there may be chunks with little or no parts of the bird call and mostly background noise, this can increase the uncertainty of the final predictions and reduce the overall performance measured by AUC. 
 
 The DNN and MMN architectures (Macro-averaged AUC: , respectively) performed worse than the CNN. For the DNN this was expected, since it only predicts on longitude and latitude values, which obviously aren't enough for a complex task such as species classification, because several different bird species can occur at the same location. However, I expected that the MMN which uses both the audio recordings and the coordinates might be better in detecting local dialects of the bird calls and, thus, achieve better results than the CNN. 
 
@@ -429,15 +472,49 @@ The DNN and MMN architectures (Macro-averaged AUC: , respectively) performed wor
 % Conclusion:
 %	- CNNs more accessible to researchers/ecologists
 
-\chapter*{Acknowledgments}
-\addcontentsline{toc}{chapter}{Acknowledgments}
 
 
+\newpage
 \renewcommand{\bibname}{References}
 \addcontentsline{toc}{chapter}{References} % Add Bibliography to the table of contents
 % this is the style file. If you need to change something, google if the file you need is already there. If not (very uncommon) google makebst.
 \bibliographystyle{chicago} 
 \bibliography{../literature/literature} % Reference the BibTeX library file
+
+\chapter*{Appendix}
+\addcontentsline{toc}{chapter}{Appendix}
+\lstdefinestyle{Rstyle}{
+	language=R,
+	basicstyle=\ttfamily\small,
+	commentstyle=\color{green!60!black},
+	stringstyle=\color{orange},
+	showstringspaces=false,
+	breaklines=true,
+	frame=single,
+	numbers=left,
+	numberstyle=\tiny\color{gray},
+	literate={/}{/}{1}  % Make "/" regular
+			 {_}{\_}{1} % Make "_" regular
+}
+\lstset{style=Rstyle}
+\section*{1-dataPreparation.R}
+\lstinputlisting{../analysis/1-dataPreparation.R}
+\newpage
+\section*{2-buildingDNNs.R}
+\lstinputlisting{../analysis/2-buildingDNNs.R}
+\newpage
+\section*{2-buildingCNNs.R}
+\lstinputlisting{../analysis/2-buildingCNNs.R}
+\newpage
+\section*{2-buildingMMNs.R}
+\lstinputlisting{../analysis/2-buildingMMNs.R}
+\newpage
+\section*{3-visualisation.R}
+\lstinputlisting{../analysis/3-visualisation.R}
+\newpage
+\section*{utils.R}
+\lstinputlisting{../analysis/utils.R}
+\newpage
 
 \chapter*{Declaration of independence}
 \addcontentsline{toc}{chapter}{Declaration of independence}
