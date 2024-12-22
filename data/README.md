@@ -1,5 +1,5 @@
 # Data
-The data was taken from [BirdCLEF 2024](https://www.kaggle.com/competitions/birdclef-2024/data). Download the "birdclef-2024.zip" file and extract its files into the data/birdclef2024 directory prior to running the analysis. The folder structure should look like this:
+The data was taken from [BirdCLEF 2024](https://www.kaggle.com/competitions/birdclef-2024/data). Download the "birdclef-2024.zip" file and extract its files prior to running the analysis. The folder structure should look like this:
 ```
 ├──data
 |    ├── birdclef2024
