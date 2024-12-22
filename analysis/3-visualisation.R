@@ -70,3 +70,35 @@ print(beehive_plot)
 
 dev.off()
 
+# Filter the data for validation set only
+validation_data <- subset(auc_data, DataType == "Validation")
+
+pdf("analysis/results/figures/auc_classSize.pdf", width = 20, height = 10)
+
+# Create the plot
+plot <- ggplot(validation_data, aes(x = ClassSize, y = AUC, color = Model)) +
+  geom_point(alpha = 0.7, size = 2) + 
+  geom_smooth(method = "lm", se = FALSE, linetype = "dashed") + 
+  scale_x_log10() +
+  labs(
+    x = "Class Size (Log Scale)",
+    y = "AUC",
+    color = "Model"
+  ) +
+  theme_minimal() + 
+  theme(
+    text = element_text(size = 18),
+    strip.text = element_text(size = 24, face = "bold"), 
+    axis.title.y = element_text(size = 30, margin = margin(r = 15)), 
+    axis.text.x = element_text(size = 20), 
+    legend.title = element_text(size = 20), 
+    legend.text = element_text(size = 18), 
+    panel.border = element_rect(color = "black", fill = NA, size = 1),
+    panel.spacing = unit(1, "lines")
+  ) 
+
+# Display the plot
+print(plot)
+
+dev.off()
+
