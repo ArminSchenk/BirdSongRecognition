@@ -186,13 +186,18 @@ Eingereicht am: & \today\\
 \mbox{} % Add an invisible box (to ensure the page is recognized as non-empty)
 \selectlanguage{english}
 
+\chapter*{Acknowledgments}
+I would like to thank Prof. Dr. Florian Hartig for supervising my thesis and always taking the time to discuss my work and provide feedback. Special thanks also to Dr. Maximilian Pichler for all his help and feedback, especially regarding the design choices of \pkg{cito}. I would also like to thank my friend Christian for all his encouragement throughout my studies.
+
+\newpage
+\thispagestyle{empty}
+\vspace*{\fill} % Push content to the bottom of the page
+\mbox{} % Add an invisible box (to ensure the page is recognized as non-empty)
+
 \chapter*{Abstract}
 \noindent In recent years, there has been a growing interest in convolutional neural networks (CNNs) in the field of ecology. Typically, large-scale deep learning frameworks, such as PyTorch or Tensorflow, are used to build and train these models. However, using these frameworks requires considerable expertise and time. Here, I present how I extended the R package \pkg{cito} to allow novice users to build and train CNNs with minimal code. \pkg{cito} is based on the numerically optimized \pkg{torch} framework, which allows the CNNs to be trained efficiently on graphics processing units (GPUs). Additionally, I have integrated several well-known CNN architectures, pre-trained on the large ImageNet dataset, into \pkg{cito} to enable transfer learning. I have also implemented a function that can combine several deep neural network (DNN) and CNN architectures into a multimodal neural network (MMN). This allows a single network to be trained on and process several different types of data. I will demonstrate the new features of \pkg{cito} using the classification of bird species based on bird calls as an example. My hope is that by providing a user-friendly pipeline for building and training CNNs and MMNs, these complex model architectures will become more accessible to researchers in the field of ecology.
 \newline\newline
 Keywords: convolutional neural network, multimodal neural network, machine learning, deep learning, transfer learning, R language, classification, regression
-\vspace{3cm}
-\section*{Acknowledgments}
-I would like to thank Prof. Dr. Florian Hartig for supervising my thesis and always taking the time to discuss my work and provide feedback. Special thanks also to Dr. Maximilian Pichler for all his help and feedback, especially regarding the design choices of \pkg{cito}. I would also like to thank my friend Christian for all his encouragement throughout my studies.
 
 \newpage
 \thispagestyle{empty}
@@ -230,14 +235,12 @@ In the remainder of this work, I introduce the new functions, discuss design cho
 
 \chapter*{Introducing the implementation of CNNs in \pkg{cito}}
 \addcontentsline{toc}{chapter}{Introducing the implementation of CNNs in \pkg{cito}}
-\section*{DNNs in \pkg{cito}}
-\addcontentsline{toc}{chapter}{DNNs in \pkg{cito}}
-The current version of \pkg{cito} only supports deep neural networks (DNNs), also known as fully connected neural networks or multilayer perceptrons, which can be build and trained using the \fn{dnn} function. The architecture of the DNNs can be specified in the \fn{dnn} function using three arguments. The first argument is a numeric vector. The length of this vector determines the number of hidden layers and the values determine the number of neurons in these layers. The other two arguments (bias and dropout) determine whether the neurons have a learnable bias and what dropout rate is applied to the neurons during training.
 
 \section*{Specifying CNN architectures}
 \addcontentsline{toc}{section}{Specifying CNN architectures}
+The first step in building any neural network is to specify its architecture. For deep neural networks (DNNs), also known as fully connected neural networks or multilayer perceptrons, the architecture is specified within \pkg{cito}s \fn{dnn} function, which also trains the network. This is possible because the architecture of a DNN can be specified with only four arguments. The first argument is a numeric vector whose length determines the number of hidden layers and whose values determine the number of neurons in the respective layers. The other three arguments specify the activation functions used, whether the neurons have a learnable bias, and the dropout rate applied to them during training. These three arguments can either be vectors of the same length as the first argument to specify these attributes for each hidden layer individually, or a single value to apply the same value to all hidden layers.
 
-The first step in building any neural network is to specify its architecture. For DNNs, this is done within \pkg{cito}s \fn{dnn} function, by providing three vectors (\val{hidden}, \val{activation} and \val{bias}). Since the architecture of CNNs is much more complex, the specification of the desired architecture is done in a separate function called \fn{create\_architecture}, which returns an object describing the architecture, which can then be passed to the new \fn{cnn} function, which we will discuss later. This is done to make the use of CNNs as user-friendly as possible, by not overloading a single function call with too many arguments and instead clearly separating them into arguments related to architecture and training, respectively. The function call of the \fn{create\_architecture} function looks like this:
+Unlike DNNs, which only consist of hidden layers, convolutional neural networks (CNNs) consist of several different types of layers. The core structure of a CNN consists of convolutional layers, which capture spatial features and combine them hierarchically, and pooling layers (maximum or average pooling), which downscale the outputs of the convolutional layers. In the end, linear layers combine the learned features to make the final predictions. Each of these layer types has different arguments that determine its architecture (Table \ref{layers}). Handling the architecture specification and the training of a CNN in the same function, as is done for DNNs, would result in a function overloaded with arguments, which would make its use unintuitive and not user-friendly. Therefore, I decided to separate architecture arguments from training arguments by implementing a second function that handles the specification of CNN architectures:
 
 \begin{figure}[h]
 	\centering
@@ -245,8 +248,8 @@ The first step in building any neural network is to specify its architecture. Fo
 	\begin{lrbox}{\lstbox}
 		\begin{lstlisting}
 create_architecture <- function(...,
-  default_n_neurons = 10,
-  default_n_kernels = 10,
+  default_n_neurons = 50,
+  default_n_kernels = 32,
   default_kernel_size = list(conv = 3, maxPool = 2, avgPool = 2),
   default_stride = list(conv = 1, maxPool = NULL, avgPool = NULL),
   default_padding = list(conv = 0, maxPool = 0, avgPool = 0),
@@ -259,12 +262,50 @@ create_architecture <- function(...,
 	\end{lrbox}
 	\resizebox{\textwidth}{!}{\usebox{\lstbox}}
 \end{figure}
+
+\begin{table}[t]
+	\caption{Functions that create the layers for the \fn{create\_architecture} function. The arguments configure the architecture of the corresponding layer and the defaults are set to commonly used values. However, the architecture of the network and its layers usually should be tuned for better performance. In particular, the n\_kernels argument shouldn't be the same for all convolutional layers of the network. It's common practice to increase n\_kernels the deeper the convolutional layer is in the network. Additionally, the linear and convolutional layers include the normalization and dropout parameters, which are used to add batch normalization and dropout regularization to the corresponding layer.}
+	\centering
+	%\renewcommand{\arraystretch}{1.3}
+	\resizebox{\textwidth}{!}{
+		\begin{tabular}{|llll|}
+			\hline
+			\textbf{Function}                                & \textbf{Arguments}     & \textbf{Explanation}                                                                                                                       & \textbf{Default}   \\ \hline
+			
+			\multirow{9}{*}{\textbf{conv()}}     & n\_kernels    & Number of kernels                                                                                                  & 32        \\
+			& kernel\_size  & Size of kernels                                                                           & 3         \\
+			& stride        & Stride of kernels                                                                     & 1         \\
+			& dilation      & Dilation of kernels                                                                 & 1         \\
+			& padding       & Zero-padding applied to input                                        & 0         \\
+			& bias          & Add bias to kernels                                                              & TRUE      \\
+			& activation    & Activation function                                         & 'relu'    \\
+			& normalization & Add batch normalization to output                                                      & FALSE     \\
+			& dropout       & Dropout probability of output channels                          & 0         \\ \hline
+			\multirow{3}{*}{\textbf{avgPool()}}  & kernel\_size  & Size of average-pooling window                                                                                                    & 2         \\
+			& stride        & Stride of average-pooling window                                                                                                  & kernel\_size         \\
+			& padding       & Zero-padding applied to input                                     & 0         \\ \hline
+			\multirow{4}{*}{\textbf{maxPool()}}  & kernel\_size  & Size of maximum-pooling window                                                                                                    & 2         \\
+			& stride        & Stride of maximum-pooling window                                                                                                  & kernel\_size         \\
+			& dilation      & Dilation of maximum-pooling window                                                                                                & 1         \\
+			& padding       & Zero-padding applied to input                                     & 0         \\
+			\hline
+			\multirow{5}{*}{\textbf{linear()}}   & n\_neurons    & Number of neurons                                                                                              & 50        \\
+			& bias          & Add bias to neurons                                                              & TRUE      \\
+			& activation    & Activation function                                                      & 'relu'    \\
+			& normalization & Add batch normalization to output                                                      & FALSE     \\
+			& dropout       & Dropout probability of neurons                                          & 0         \\ \hline
+		\end{tabular}
+	}
+	
+	\label{layers}
+\end{table}
+
 \begin{figure}[t]
 	\centering
 	\newsavebox{\archbox} % Create a savebox to store the listing
 	\begin{lrbox}{\archbox}
 		\begin{lstlisting}
-arch <- create_architecture(conv(32), maxPool(4), conv(64), avgPool(29), linear(100), linear(),
+arch <- create_architecture(conv(), maxPool(4), conv(64), avgPool(29), linear(100), linear(),
                             default_dropout = list(conv=0.3, linear=0.5))
 		\end{lstlisting}
 	\end{lrbox}
@@ -298,54 +339,23 @@ plot(arch, c(3,128,128), 2)
 		\vspace*{0.04cm}
 		\includegraphics[width=\textwidth]{plot.pdf}
 	\end{subfigure}
-	\caption{Output of the \fn{print} (left) and \fn{plot} (right) functions for the CNN architecture \textit{arch}, which is created above, and the specified input and output dimensions. The \fn{print} and \fn{plot} functions also work on the S3 object returned by the \fn{cnn} function. In this case, the input and output dimensions don't have to be specified. Instead, the dimensions are derived from the data used for training.}
+	\caption{Output of the \fn{print} (left) and \fn{plot} (right) functions for the created CNN architecture and the specified input and output dimensions. The \fn{print} and \fn{plot} functions also work on the S3 object returned by the \fn{cnn} function. In this case, the input and output dimensions don't have to be specified. Instead, the dimensions are derived from the data used for training.}
 	\label{printplot}
 \end{figure}
-The core structure of a CNN consists of a combination of convolutional and pooling layers, followed by one or more linear layers. These layers can be specified using the provided layer functions \fn{conv}, \fn{avgPool}, \fn{maxPool} and \fn{linear}, and then passed to the \fn{create\_architecture} function, which combines them into a complete architecture. Each of these functions has several arguments (see Table \ref{layers}) that affect the corresponding layer, but can also be used without specifying any of them. In this case, the unspecified arguments are filled with the default values set within the \fn{create\_architecture} function. For example, a linear layer created with \fn[\val{n\_neurons=128}]{linear} will have its unspecified arguments \val{bias}, \val{activation}, \val{normalization} and \val{dropout} set to \val{TRUE}, \val{"relu"}, \val{FALSE} and \val{0.0} respectively. These defaults can be overridden in the \fn{create\_architecture} function. For example, if you want to introduce a dropout rate of \val{0.5} for all linear layers that don't specify the dropout rate themselves, you can set \val{default\_dropout = }\fn[\val{linear=0.5}]{list}. Note that this only changes the default value for linear layers, leaving the default dropout rate for convolutional layers at \val{0.0}. If you don't want this, you can either also set a different default for convolutional layers (e.g. \val{default\_dropout = }\fn[\val{linear=0.5, conv=0.3}]{list}) or set the default dropout rate for both linear and convolutional layers to the same value with \val{default\_dropout = 0.5}. This implementation of the \fn{create\_architecture} function allows a high degree of flexibility and customization, while still allowing users who don't need it to specify CNN architectures in a single line of code (see section \pkg{Case study}).
+
+This function combines convolutional, pooling and linear layers, which can be created using the provided layer functions \fn{conv}, \fn{avgPool}, \fn{maxPool} and \fn{linear}, to an object describing the complete architecture, which is then passed to the \fn{cnn} function. Each of these layer functions has several arguments (see Table \ref{layers}) that specify the architecture of the layer, but can also be used without specifying any of them. In this case, the unspecified arguments are filled with the default values set within the \fn{create\_architecture} function. For example, a linear layer created with \fn[n\_neurons=128]{linear} will have its unspecified arguments bias, activation, normalization and dropout set to TRUE, "relu", FALSE and 0.0, respectively. These defaults can be overridden in the \fn{create\_architecture} function, which is useful to avoid having to specify the same value in each layer individually. For example, if you want to apply a dropout rate of 0.5 to all linear layers that don't specify the dropout rate themselves, you can set default\_dropout = \fn[linear=0.5]{list}. Note that this only changes the default value for linear layers, leaving the default dropout rate for convolutional layers at 0.0. If you don't want this, you can either also set a different default for convolutional layers (e.g. default\_dropout = \fn[linear=0.5, conv=0.3]{list}) or set the default dropout rate for both linear and convolutional layers to the same value with default\_dropout = 0.5. Note also that although the dropout rate is theoretically a training hyperparameter, I included it in the architecture specification to make it easier to specify individual values for the layers if necessary.
+
+The kernel\_size, stride, dilation and padding arguments of the convolutional and pooling layers can be specified individually for each input dimension. For example, in the case of 2D convolutions, kernel\_size can be set to c(3,5) to generate 3x5 kernels. Alternatively, if only a single value is given, symmetric kernels will be generated. For example, setting kernel\_size to 5 will generate 5x5 or 5x5x5 kernels if the input data provided to the \fn{cnn} function is two or three dimensional. Setting the stride of pooling layers to NULL (also the default value) sets the stride equal to the kernel\_size, which is commonly done for pooling layers.
+
+For the defaults of the other arguments, I have also chosen values that are commonly used and make sense as defaults. For example, there are several things to consider when choosing the default kernel size: First, the kernel size should be greater than 1 so that the layer increases the receptive field of the CNN. This makes sense for a default value, but doesn't mean that a kernel size of 1 should never be used. For example, many well-known architectures use kernels of size 1 for dimension reduction instead of pooling layers. The default kernel size should also be odd, so that it is possible to add symmetrical padding to make the output feature maps have the same size as the input feature maps. Finally, it has been shown that stacking multiple smaller convolutions achieves the same receptive field as a larger convolution, while being computationally cheaper (especially for 2D and 3D convolutions) and introducing more non-linearities, which help the network to model complex functions \citep{simonyanVeryDeepConvolutional2015}. For example, two 3x3 convolutions achieve the same receptive field as a 5x5 convolution, but need only 18 parameters instead of 25. Therefore, 3 - as the smallest, odd number greater than 1 - is a suitable default value for kernel\_size. This can also be seen in architectures such as VGGNet \citep{simonyanVeryDeepConvolutional2015} and ResNet \citep{heDeepResidualLearning2015}, which consist almost entirely of 3x3 convolutions.
+
+To help the user understand the architecture created by the \fn{create\_architecture} function, I implemented \fn{print} and \fn{plot} functions for the resulting R object. These visualize the configuration of each layer in detail, including how the dimensions of an input of specified size changes after each layer (Figure \ref{printplot}). This implementation of the \fn{create\_architecture} and layer functions allows CNN architectures to be specified with minimal code, while still providing a high degree of flexibility and customization.
+
+\section*{Training CNNs and transfer learning}
+\addcontentsline{toc}{section}{Training CNNs and transfer learning}
 
 \begin{table}[t]
-	\caption{Functions that specify the layers for the \fn{create\_architecture} function. The arguments configure the architecture of the corresponding layer and the defaults are set to commonly used values. However, the architecture of the network and each layer is usually tuned for better performance. In particular, the n\_kernels argument shouldn't be the same for all convolutional layers of the network. It's common practice to increase n\_kernels the deeper the convolutional layer is in the network. Additionally, the linear and convolutional layers include the normalization and dropout parameters, which are used to add batch normalization and dropout regularization to the corresponding layer.}
-	\centering
-	%\renewcommand{\arraystretch}{1.3}
-	\resizebox{\textwidth}{!}{
-		\begin{tabular}{|llll|}
-			\hline
-			\textbf{Function}                                & \textbf{Arguments}     & \textbf{Explanation}                                                                                                                       & \textbf{Default}   \\ \hline
-			
-			\multirow{9}{*}{\textbf{conv()}}     & n\_kernels    & Number of kernels                                                                                                  & 32        \\
-			& kernel\_size  & Size of kernels                                                                           & 3         \\
-			& stride        & Stride of kernels                                                                     & 1         \\
-			& dilation      & Dilation of kernels                                                                 & 1         \\
-			& padding       & Zero-padding applied to input                                        & 0         \\
-			& bias          & Add bias to kernels                                                              & TRUE      \\
-			& activation    & Activation function                                         & 'relu'    \\
-			& normalization & Add batch normalization to output                                                      & FALSE     \\
-			& dropout       & Dropout probability of output channels                          & 0         \\ \hline
-			\multirow{3}{*}{\textbf{avgPool()}}  & kernel\_size  & Size of average-pooling window                                                                                                    & 2         \\
-			& stride        & Stride of average-pooling window                                                                                                  & kernel\_size         \\
-			& padding       & Zero-padding applied to input                                     & 0         \\ \hline
-			\multirow{4}{*}{\textbf{maxPool()}}  & kernel\_size  & Size of maximum-pooling window                                                                                                    & 2         \\
-			& stride        & Stride of maximum-pooling window                                                                                                  & kernel\_size         \\
-			& dilation      & Dilation of maximum-pooling window                                                                                                & 1         \\
-			& padding       & Zero-padding applied to input                                     & 0         \\
-			\hline
-			\multirow{5}{*}{\textbf{linear()}}   & n\_neurons    & Number of neurons                                                                                              & 50        \\
-			& bias          & Add bias to neurons                                                              & TRUE      \\
-			& activation    & Activation function                                                      & 'relu'    \\
-			& normalization & Add batch normalization to output                                                      & FALSE     \\
-			& dropout       & Dropout probability of neurons                                          & 0         \\ \hline
-		\end{tabular}
-	}
-
-	\label{layers}
-\end{table}
-
-For the defaults, I have chosen values that are commonly used and make sense as defaults. For example, there are several things to consider when choosing the default kernel size: First, the kernel size should be greater than 1 so that the layer increases the receptive field of the CNN. This makes sense for a default value, but doesn't mean that a kernel size of 1 should never be used. For example, many popular architectures use kernels of size 1 for dimension reduction. The default kernel size should also be odd, so that it is possible to add symmetrical padding to make the output feature maps have the same size as the input feature maps. This is important for tasks that require precise spatial alignment, such as segmentation or detection [Zitat]. Finally, it has been shown that stacking multiple smaller convolutions achieves the same receptive field as a larger convolution, while being computationally cheaper (especially for 2D and 3D convolutions) and introducing more non-linearities [Zitat]. For example, two 3x3 convolutions achieve the same receptive field as a 5x5 convolution, but need only 18 parameters instead of 25. Therefore, 3 - as the smallest, odd number greater than 1 - is a suitable default value. This can also be seen in architectures such as VGGNet [Zitat] and ResNet [Zitat], which consist almost entirely of 3x3 convolutions.
-
-To help the user understand the architecture created by the \fn{create\_architecture} function, I implemented \fn{print} and \fn{plot} functions for the resulting R object. These visualize the configuration of each layer in detail, including how the size of the input changes after each layer (Figure \ref{plot}).
-
-\begin{table}[t]
-	\caption{Arguments of the \fn{cnn} function that control the learning process of the network. The defaults are set to reasonable values, but hyperparameters (e.g. learning rate, batchsize, lambda and alpha) usually need to be tuned to avoid convergence problems and improve performance. Detailed guidance on this can be found in the \pkg{cito} R package \fn["Training neural networks"]{vignette}.}
+	\caption{Arguments of the \fn{cnn} function that control the learning process of the network. The defaults are set to reasonable values, but hyperparameters (e.g. learning rate, batchsize, lambda and alpha) usually need to be tuned to avoid convergence problems and improve performance.}
 	\centering
 	%\renewcommand{\arraystretch}{1.1}
 	\resizebox{\textwidth}{!}{
@@ -372,15 +382,13 @@ To help the user understand the architecture created by the \fn{create\_architec
 	\label{parameters}
 \end{table}
 
-\section*{Training CNNs and transfer learning}
-\addcontentsline{toc}{section}{Training CNNs and transfer learning}
 Once the architecture is specified, the network can be constructed and trained using the \fn{cnn} function. This function returns the trained network as an S3 object which contains not only the trained model itself, but also metadata about the architecture and training process. The S3 object can then be used to generate predictions on new data sets using the \fn{predict} function, or to continue training for additional epochs using the \fn{continue\_training} function. The latter also allows the training data and hyperparameters to be changed for further optimization. Additionally, the \fn{print} and \fn{plot} functions mentioned above are compatible with this object.
 
 The arguments of the \fn{cnn} function include several hyperparameters (Table \ref{parameters}) that influence the training process and the performance of the network. These hyperparameters can be crucial to avoid common problems such as overfitting. For example, early stopping can be used to stop the training process early if the validation loss does not improve over a specified number of epochs, thus saving the network from unnecessary overtraining. Similarly, elastic net regularization, controlled by the lambda and alpha parameters, can help avoid overfitting by reducing the functional complexity of the network. However, improper configuration of the hyperparameters can also lead to reduced model performance and slow or even prevent convergence during training. While the defaults are set to values that should work for many applications, optimal performance typically requires tuning both the CNN architecture and the training hyperparameters, ideally under cross-validation. During training, \pkg{cito} visualizes both training and validation loss, allowing users to monitor the training process in real time. As an additional reference for comparison, the loss of an intercept-only model is depicted as a baseline. This visualization helps the user to identify potential problems such as lack of convergence or overfitting.
 
 Training deep neural networks from scratch often requires large amounts of data, computational resources and time. In many applications, it can be useful to use a model that has already  been pre-trained on a large dataset from another task instead. The learned features of this network act as a good starting point and are fine-tuned during the training on the new dataset, to adapt the model to the task at hand. This not only minimizes the need for large datasets but also reduces the time required to train a network.
 
-The R package \pkg{torchvision} provides several models pre-trained on the ImageNet dataset [Zitat], such as ResNet [Zitat] and MobileNet [Zitat]. To use the architectures of these models in \pkg{cito}, the user can use the \fn{transfer} function within the \fn{create\_architecture} function. In the \fn{transfer} function, the user specifies the name of the architecture to be used and whether the pre-trained parameters should be frozen, in which case only the parameters of the linear layers at the end of the network are adjusted during training. It is also possible to initialize these architectures with random parameters instead.
+The R package \pkg{torchvision} [Zitat] provides several models pre-trained on the ImageNet dataset [Zitat], such as ResNet [Zitat] and MobileNet [Zitat]. To use the architectures of these models in \pkg{cito}, the user can use the \fn{transfer} function within the \fn{create\_architecture} function. In the \fn{transfer} function, the user specifies the name of the architecture to be used and whether the pre-trained parameters should be frozen, in which case only the parameters of the linear layers at the end of the network are adjusted during training. It is also possible to initialize these architectures with random parameters instead.
 
 \section*{Multimodal neural networks}
 \addcontentsline{toc}{section}{Multimodal neural networks}
@@ -405,17 +413,17 @@ In the future, more neural network architectures (e.g. recurrent neural networks
 
 \section*{Package validation}
 \addcontentsline{toc}{section}{Package validation}
-To test the implementation of CNNs and MMNs, I designed unit tests using the R package \pkg{testthat} [Zitat]. The first tests check whether the architectures work for all possible combinations of input data, loss function and training device. To do this, I generate six randomly distributed input data sets to simulate the cases of 1D (e.g. spectrograms), 2D (e.g. images) and 3D (e.g. time series of satellite images) convolutions with 1 or 3 channels each. For each loss function, I then generate response variables in any acceptable format. For example, the response variable for a binomial loss can be a factor or a matrix filled with either boolean values or ones and zeros. I then train one (or more, if the loss function allows different response formats) CNNs on each available device (CPU, GPU) for each combination of input data and loss function. The CNN architecture used for this is rather simple to reduce computational cost, but includes all available layer types presented above. For each trained CNN, the implemented support functions such as \fn{plot}, \fn{predict} and \fn{continue\_training} are also tested to ensure that they run without errors.
+To test the implementation of CNNs and MMNs, I designed unit tests using the R package \pkg{testthat} \citep{wickhamTestthatGetStarted2011}. The first tests check whether the architectures work for all possible combinations of input data, loss function and training device. To do this, I generate six randomly distributed input data sets to simulate the cases of 1D (e.g. spectrograms), 2D (e.g. images) and 3D (e.g. time series of satellite images) convolutions with 1 or 3 channels each. For each loss function, I then generate response variables in any acceptable format. For example, the response variable for a binomial loss can be a factor or a matrix filled with either boolean values or ones and zeros. I then train one (or more, if the loss function allows different response formats) CNNs on each available device (CPU, GPU) for each combination of input data and loss function. The CNN architecture used for this is rather simple to reduce computational cost, but includes all available layer types presented above. For each trained CNN, the implemented support functions such as \fn{plot}, \fn{predict} and \fn{continue\_training} are also tested to ensure that they run without errors.
 
-Unlike the first tests, which used only randomly generated data to prove that the code was working correctly, the next test uses non-random data to ensure that the networks are able to learn and predict properly. To do this, I generate grey-scale images of either rectangles or ellipsoids. 90\% of the generated images are used to train a CNN, which is then used to predict the class labels of the remaining 10\%. The test is considered successful if the accuracy achieved is greater than 95\%. To train the CNN in this test, I also use some of the supported training techniques, such as elastic net regularization and early stopping.
+Unlike the first tests, which use only randomly generated data to prove that the code is working correctly, the next test uses non-random data to ensure that the networks are able to learn and predict properly. To do this, I generate grey-scale images of either rectangles or ellipsoids. 90\% of the generated images are used to train a CNN, which is then used to predict the class labels of the remaining 10\%. The test is considered successful if the accuracy achieved is greater than 95\%. To train the CNN in this test, I also use some of the supported training techniques, such as elastic net regularization and early stopping.
 
-The final tests ensure that transfer learning is working properly. First, it is tested whether all the supported architectures of the \pkg{torchvision} [Zitat] package can be loaded and a CNN can be built and trained without errors, with or without linear layers provided after the transfer layer. This is followed by an accuracy test similar to the one described above.
+The final tests ensure that transfer learning is working properly. First, I test whether all the supported architectures of the \pkg{torchvision} package can be loaded and used to build and train a CNN without errors, with or without linear layers provided after the transfer layer. Afterwards, I conduct an accuracy test similar to the one described above.
 
-The tests for the MMN architecture are mostly the same, with the main difference being that instead of a CNN, an MMN consisting of a CNN and a DNN is trained.
+The tests for the MMN architecture are mostly the same. The main difference is that instead of a CNN, an MMN consisting of one CNN and one DNN is trained.
 
 \section*{Package availability}
 \addcontentsline{toc}{section}{Package availability}
-The current version of \pkg{cito} (1.1) can be downloaded from the comprehensive R archive network (CRAN). My implementations of CNNs and MMNs are added in version 1.1.1, which can be found on GitHub (\url{https://github.com/citoverse/cito}) and are planned to be included in the next CRAN release.
+The current version of \pkg{cito} (1.1) can be downloaded from the comprehensive R archive network (CRAN). My implementation of CNNs and MMNs are added in version 1.1.1, which can be found on GitHub (\url{https://github.com/citoverse/cito}) and are planned to be included in the next CRAN release.
 
 \chapter*{Case study}
 \addcontentsline{toc}{chapter}{Case study}
@@ -512,11 +520,15 @@ I made three observations when comparing the performance of the architectures:
  \item For all three architectures, the size of a class has a significant linear effect on the corresponding validation AUC. However, while this effect is positive for the CNN and MMN, it is negative for the DNN (Figure \ref{classSize}). The computed linear effects for the CNN, MMN and DNN are $6.350\times10^{-5}$, $4.298\times10^{-5}$ and $-2.134\times10^{-4}$, respectively.
 \end{enumerate}
 
+\section*{Code availability}
+\addcontentsline{toc}{section}{Code availability}
+The code I used to preprocess the data, train the networks and generate these results can be found in the Appendix or on GitHub: \url{https://github.com/ArminSchenk/BirdSongRecognition}
+
 \chapter*{Discussion and conclusion}
 \addcontentsline{toc}{chapter}{Discussion and conclusion}
 In this work, I presented the implementation of CNN and MMN architectures in the R package \pkg{cito}. Building and training CNNs previously required users to have extensive knowledge of complex deep learning frameworks such as PyTorch or TensorFlow. With the simple interface I provide, this is no longer necessary. Because of the \pkg{torch} backend and the GPU support it provides, \pkg{cito} can train these large networks as efficiently as the complex frameworks. I also provide the ability to use transfer learning by integrating several pre-trained models. To address the current trend towards MMNs, I have implemented a function that can combine several DNN and CNN architectures into a MMN. Using bird species classification as an example, I demonstrated how little code is required when using \pkg{cito} to train good performing CNN-based classifiers.
 
-In my case study the MMN and CNN architectures performed much better than the DNN architecture. This was expected since the DNNs were only trained on the coordinates, which obviously aren't enough for a complex task such as species classification, because several different bird species can occur at the same location. This is probably also the reason why the DNN performed worse for the more common bird species. Since common bird species are usually also wider spread, the classification based on coordinates alone becomes more difficult. However, I also showed that the MMN architecture performed slightly better than the CNN on the validation folds and slightly worse on the training folds. While the CNN was trained using only the Mel spectrograms of the audio recordings, the MMN was trained using both the Mel spectrograms and the coordinates of the recording location. The slightly better validation performance and slightly worse training performance could indicate that the MMN was able to use the coordinate values to reduce overfitting. A possible explanation could be that the coordinates help the MMN to better identify local bird call dialects. Recently, \citet(sastryBirdSATCrossViewContrastive2024) proposed a framework for bird species classification and ecological mapping that also uses a multimodal approach including metadata (coordinates and time) in addition to ground-level bird images and satellite images, supporting my findings that including metadata (such as coordinates) can be useful for bird species classification. Apart from including metadata, multimodal architectures have also been used to combine audio and visual data for bird species classification \citep[e.g.,][]{bold2019cross}.  MMNs have also found success in other ecological applications such as species distribution modeling \citep[e.g.,][]{zhangNovelMultimodalSpecies2022}. Since MMNs are still relatively new, more work  still has to be done to better understand for what applications and under what conditions MMNs can and should be used. Implementing MMNs in \pkg{cito} makes them more accessible, which contributes to this progress.
+In my case study the MMN and CNN architectures performed much better than the DNN architecture. This was expected since the DNNs were only trained on the coordinates, which obviously aren't enough for a complex task such as species classification, because several different bird species can occur at the same location. This is probably also the reason why the DNN performed worse for the more common bird species. Since common bird species are usually also wider spread, the classification based on coordinates alone becomes more difficult. However, I also showed that the MMN architecture performed slightly better than the CNN on the validation folds and slightly worse on the training folds. While the CNN was trained using only the Mel spectrograms of the audio recordings, the MMN was trained using both the Mel spectrograms and the coordinates of the recording location. The slightly better validation performance and slightly worse training performance could indicate that the MMN was able to use the coordinate values to reduce overfitting. A possible explanation could be that the coordinates help the MMN to better identify local bird call dialects. Recently, \citet{sastryBirdSATCrossViewContrastive2024} proposed a framework for bird species classification and ecological mapping that also uses a multimodal approach including metadata (coordinates and time) in addition to ground-level bird images and satellite images, supporting my findings that including metadata (such as coordinates) can be useful for bird species classification. Apart from including metadata, multimodal architectures have also been used to combine audio and visual data for bird species classification \citep[e.g.,][]{bold2019cross}cand have also found success in other ecological applications such as species distribution modeling \citep[e.g.,][]{zhangNovelMultimodalSpecies2022}. Since MMNs are still relatively new, more work  still has to be done to better understand for what applications and under what conditions MMNs can and should be used. Implementing MMNs in \pkg{cito} makes them more accessible, which contributes to this progress.
 
 In my case study, the MNN achieved a high macro-average AUC of 0.970 on the validation folds of the 5-fold cross-validation. However, these results should not be compared to the results of the BirdCLEF2024 Kaggle competition (macro-average AUC of winning team: 0.690), as the models of the competition were evaluated on a separate test set, which has significant differences from the training set I performed my evaluation via cross-validation on: 1) The test set contains only the audio files, not the coordinates. This makes it impossible to evaluate the DNNs and MMNs I trained on the test set, as they need these to make predictions. 2) Unlike the training set, which contains sound recordings from all over the world, the test set only contains sound recordings from the Western Ghats of India. This local blocking of the test set could reduce model performance, as a model trained on the global data could overfit to global patterns, such as background noise or local dialects of bird calls, that are not present in the local region of the test set. 3) The sound recordings in the test set have a fixed length of 4 minutes, whereas the median length of the sound recordings in the training set is only 22.7 seconds. A large proportion of the training recordings are shorter or only slightly longer than 10 seconds, so it can be expected that the randomly sampled 10-second chunk will contain at least parts of the bird call that can be used for prediction. The probability that a random 10-second chunk of the 4-minute audio recordings in the test set will contain parts of the bird call, rather than just noise, is lower. The winning team in the Kaggle competition dealt with this problem by dividing the audio recordings into 10-second chunks and then averaging the predictions of these chunks. However, as there may be chunks with little or no parts of the bird call and mostly background noise, this can increase the uncertainty of the final predictions and reduce the overall performance measured by AUC. 
 
