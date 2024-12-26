@@ -237,7 +237,7 @@ In the remainder of this work, I introduce the new functions, discuss design cho
 
 \section*{Specifying CNN architectures}
 \addcontentsline{toc}{section}{Specifying CNN architectures}
-The first step in building any neural network is to specify its architecture. For deep neural networks (DNNs), also known as fully connected neural networks or multilayer perceptrons, the architecture is specified within \pkg{cito}s \fn{dnn} function, which also trains the network. This is possible because the architecture of a DNN can be specified with only four arguments. The first argument is a numeric vector whose length determines the number of hidden layers and whose values determine the number of neurons in the respective layers. The other three arguments specify the activation functions used, whether the neurons have a learnable bias, and the dropout rate applied to them during training. These three arguments can either be vectors of the same length as the first argument to specify these attributes for each hidden layer individually, or a single value to apply the same value to all hidden layers.
+The first step in building any neural network is to specify its architecture. For deep neural networks (DNNs), also known as fully connected neural networks or multilayer perceptrons, the architecture is specified within \pkg{cito}s \fn{dnn} function, which also trains the network. This is possible because the architecture of a DNN can be specified with only four arguments (hidden, activation, bias, dropout). The first argument is a numeric vector whose length determines the number of hidden layers and whose values determine the number of neurons in the respective layers. The other three arguments specify the activation functions used, whether the neurons have a learnable bias, and the dropout rate applied to them during training. These three arguments can either be vectors of the same length as the first argument to specify these attributes for each hidden layer individually, or a single value to apply the same value to all hidden layers.
 
 Unlike DNNs, which only consist of hidden layers, convolutional neural networks (CNNs) consist of several different types of layers. The core structure of a CNN consists of convolutional layers, which capture spatial features and combine them hierarchically, and pooling layers (maximum or average pooling), which downscale the outputs of the convolutional layers. In the end, linear layers combine the learned features to make the final predictions. Each of these layer types has different arguments that determine its architecture (Table \ref{layers}). Handling the architecture specification and the training of a CNN in the same function, as is done for DNNs, would result in a function overloaded with arguments, which would make its use unintuitive and not user-friendly. Therefore, I decided to separate architecture arguments from training arguments by implementing a second function that handles the specification of CNN architectures:
 
@@ -398,21 +398,21 @@ Since the ImageNet dataset consists of RGB images, all pre-trained architectures
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{MMN.pdf}
-	\label{MMN}
 	\caption{Example of a multimodal neural network that combines a CNN and a DNN to process RGB images and tabular data in the same network. A network like this can be created by $mmn(Y \sim cnn(...) + dnn(...), ...)$. The \fn{mmn} function can combine any number of CNNs and DNNs.}
+	\label{MMN}
 \end{figure}
 
-Multimodal neural networks are designed to process data in different formats (e.g. image, tabular, sound) simultaneously. To do this, an appropriate architecture is built for each input format (e.g. CNN for image data, DNN for tabular data). The concatenated output embeddings of each of these architectures serve as input to a linear classifier that combines the different architectures. This allows the network to be trained on all data simultaneously, and to learn interactions between different data types.
+An interesting extension of CNNs are multimodal neural networks (MMNs). MMNs combine different neural network architectures to enable the simultaneous processing of data in different formats (e.g. image, tabular, sound). To do this, an appropriate architecture is built for each input format (e.g. CNN for image data, DNN for tabular data). The outputs of the final feature extraction layers of each architecture are then concatenated and serve as input to a linear classifier that makes the final predictions (Figure \ref{MMN}). This allows the network to be trained on all data simultaneously, and to learn interactions between features of different data types. MMNs 
 
-MMNs are implemented in \pkg{cito} with the \fn{mmn} function, which allows the creation of MMNs combining any number of CNNs and DNNs. This can be specified by the user with a formula. For example, to create an MMN that consists of one CNN and one DNN:
+To build and train MMNs in \pkg{cito}, I implemented the \fn{mmn} function. The created MMNs can consist of any number of CNNs and DNNs, which can be specified by the user with a formula. For example, to create an MMN that consists of one CNN and one DNN:
 
 \begin{lstlisting}[literate={~}{{$\sim$}}1]
 	mmn(Y ~ cnn(...) + dnn(...), ...)
 \end{lstlisting}
 
-where Y is the response data. Within the \fn{cnn} and \fn{dnn} functions, the input data and the architecture of the corresponding subnetwork can be specified. The architecture of the linear classifier and the training hyperparameters (Table \ref{parameters}) can be specified in the \fn{mmn} function in the same way as in the \fn{dnn} function.
+where Y is the response variable. Within the \fn{cnn} and \fn{dnn} parts of the formula, the input data and the architecture of the corresponding subnetwork can be specified. The architecture of the linear classifier that combines the subnetworks can be specified in the \fn{mmn} function in the same way as in the \fn{dnn} function (hidden, activation, bias, dropout). The \fn{mmn} function supports the same training hyperparameters as the \fn{dnn} and \fn{cnn} functions (Table \ref{parameters}).
 
-In the future, more neural network architectures (e.g. recurrent neural networks) are planned to be implemented in \pkg{cito}, which will allow the \fn{mmn} function to combine even more types of data. 
+%In the future, more neural network architectures (e.g. recurrent neural networks) are planned to be implemented in \pkg{cito}, which will allow the \fn{mmn} function to combine even more types of data. 
 
 \section*{Package validation}
 \addcontentsline{toc}{section}{Package validation}
@@ -517,11 +517,11 @@ I evaluated the network architectures using 5-fold cross-validation on the datas
 \section*{Results}
 \addcontentsline{toc}{section}{Results}
 
-I made three observations when comparing the performance of the architectures: 1) On the validation folds, the MMN performed slightly better than the CNN and both performed much better than the DNN (Figure \ref{beehive}). The macro-average AUC values on the validation folds for the MMN, CNN and DNN are 0.970, 0.968 and 0.842, respectively. 2) While all architectures performed worse on the validation folds, the difference in macro-average AUC between the training and validation folds is largest for the CNN, slightly smaller for the MMN and much smaller for the DNN (Figure \ref{beehive}). The differences in macro-average AUC for the CNN, MMN and DNN are -0.029, -0.022 and -0.009, respectively. 3) For all three architectures, the size of a class has a significant linear effect on the corresponding validation AUC. However, while this effect is positive for the CNN and MMN, it is negative for the DNN (Figure \ref{classSize}). The computed linear effects for the CNN, MMN and DNN are $6.350\times10^{-5}$, $4.298\times10^{-5}$ and $-2.134\times10^{-4}$, respectively.
+I made three observations when comparing the performance of the architectures: 1) On the validation folds, the MMN performs slightly better than the CNN and both perform much better than the DNN (Figure \ref{beehive}). The macro-average AUC values on the validation folds for the MMN, CNN and DNN are 0.970, 0.968 and 0.842, respectively. 2) While all architectures perform worse on the validation folds, the difference in macro-average AUC between the training and validation folds is largest for the CNN, slightly smaller for the MMN and much smaller for the DNN (Figure \ref{beehive}). The differences in macro-average AUC for the CNN, MMN and DNN are -0.029, -0.022 and -0.009, respectively. 3) For all three architectures, the size of a class has a significant linear effect on the corresponding validation AUC. However, while this effect is positive for the CNN and MMN, it is negative for the DNN (Figure \ref{classSize}). The computed linear effects for the CNN, MMN and DNN are $6.350\times10^{-5}$, $4.298\times10^{-5}$ and $-2.134\times10^{-4}$, respectively.
 
 \section*{Code availability}
 \addcontentsline{toc}{section}{Code availability}
-The code I used to preprocess the data, train the networks and generate these results can be found in the Appendix or on GitHub: \url{https://github.com/ArminSchenk/BirdSongRecognition}
+The code I used to preprocess the data, train the networks and generate the results can be found in the Appendix or on GitHub: \url{https://github.com/ArminSchenk/BirdSongRecognition}
 
 \chapter*{Discussion and conclusion}
 \addcontentsline{toc}{chapter}{Discussion and conclusion}
